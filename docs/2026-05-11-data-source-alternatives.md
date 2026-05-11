@@ -23,15 +23,15 @@ This rules out any source that prohibits offline storage or only provides a runt
 
 Before evaluating sources, it is important to understand what we are dealing with:
 
-| Translation | Rights Holder | Status |
-|---|---|---|
-| KJV | — | Public domain |
-| AMP | The Lockman Foundation | Copyrighted |
-| AMPC | The Lockman Foundation | Copyrighted |
-| ERV | Bible League International | Copyrighted |
-| NLT | Tyndale House Publishers | Copyrighted |
-| TPT | Passion & Fire Ministries / BroadStreet Publishing | Copyrighted |
-| MSG | NavPress / Tyndale House Publishers | Copyrighted |
+| Translation | Rights Holder                                      | Status        |
+| ----------- | -------------------------------------------------- | ------------- |
+| KJV         | —                                                  | Public domain |
+| AMP         | The Lockman Foundation                             | Copyrighted   |
+| AMPC        | The Lockman Foundation                             | Copyrighted   |
+| ERV         | Bible League International                         | Copyrighted   |
+| NLT         | Tyndale House Publishers                           | Copyrighted   |
+| TPT         | Passion & Fire Ministries / BroadStreet Publishing | Copyrighted   |
+| MSG         | NavPress / Tyndale House Publishers                | Copyrighted   |
 
 Six of seven target translations are copyrighted. No source can legally provide them without publisher agreements.
 
@@ -44,6 +44,7 @@ Six of seven target translations are copyrighted. No source can legally provide 
 **Sources considered:** `@helloao/cli` (AO Lab), `wldeh/bible-api` (GitHub), Bolls.life downloads, Project Gutenberg, Berean Standard Bible
 
 **Findings:**
+
 - KJV, ASV, WEB, BSB, YLT, Darby are freely self-hostable with no restrictions
 - ERV, AMP, AMPC, NLT, TPT, MSG are not available through any public domain or Creative Commons source — they are actively enforced copyrights
 
@@ -54,11 +55,12 @@ Six of seven target translations are copyrighted. No source can legally provide 
 ### 2. YouVersion Platform (platform.youversion.com)
 
 **Findings:**
+
 - YouVersion offers a developer platform with free Bible tools
 - Has 3,500+ translations including all target translations
-- Terms of Use contain a direct competition clause: *"use or exploit the YV IP to create or provide services that replicate or compete with YouVersion, the YouVersion Bible App, or YVP"*
+- Terms of Use contain a direct competition clause: _"use or exploit the YV IP to create or provide services that replicate or compete with YouVersion, the YouVersion Bible App, or YVP"_
 - A Bible verse search website is precisely what YouVersion is — this clause blocks the use case entirely
-- Even if the competition clause were navigable, the ToS states: *"We are not providing You rights in biblical works or works other than YV IP, which You must obtain from their respective owners and licensors"* — Bible text rights are not included
+- Even if the competition clause were navigable, the ToS states: _"We are not providing You rights in biblical works or works other than YV IP, which You must obtain from their respective owners and licensors"_ — Bible text rights are not included
 
 **Verdict:** Ruled out. Competition clause and no Bible text rights.
 
@@ -67,6 +69,7 @@ Six of seven target translations are copyrighted. No source can legally provide 
 ### 3. Tyndale NLT API (api.nlt.to)
 
 **Findings:**
+
 - Tyndale operates a dedicated NLT API, free for non-commercial use
 - Has both passage retrieval and keyword search endpoints
 - Free tier: 500 requests/day, 50 verses/request
@@ -81,6 +84,7 @@ Six of seven target translations are copyrighted. No source can legally provide 
 ### 4. Digital Bible Library (library.bible)
 
 **Findings:**
+
 - The DBL is the underlying licensing body behind api.bible, operated by United Bible Societies
 - AMP, NLT, MSG, TPT are present as "Controlled access" translations
 - Controlled access requires an organisation-level account and a license agreement with each publisher directly
@@ -94,6 +98,7 @@ Six of seven target translations are copyrighted. No source can legally provide 
 ### 5. Bible Gateway API (biblegateway.com)
 
 **Findings:**
+
 - Bible Gateway offers a paid developer API with access to many licensed translations
 - Terms prohibit local storage and bulk indexing — content must be rendered live from their API
 - Suitable only for runtime access, not offline indexing
@@ -106,6 +111,7 @@ Six of seven target translations are copyrighted. No source can legally provide 
 ### 6. Bolls.life (bolls.life/api)
 
 **Findings:**
+
 - Allows full translation downloads as ZIP/JSON files
 - Has a search API with keyword, case sensitivity, and Strong's number support
 - Explicitly discourages scraping individual endpoints but permits full-download format
@@ -121,13 +127,13 @@ Six of seven target translations are copyrighted. No source can legally provide 
 
 **Publishers contacted / researched:**
 
-| Translation | Publisher | Findings |
-|---|---|---|
-| AMP / AMPC | The Lockman Foundation | Permission to Quote form for print/web up to 1,000 verses; no developer API; bulk/app licensing requires written agreement |
-| NLT | Tyndale House Publishers | NLT API available (see above); bulk licensing via permissions@tyndale.com |
-| MSG | NavPress / Tyndale | Up to 500 verses without permission; full app licensing via permissions@tyndale.com |
-| TPT | BroadStreet Publishing | Up to 250 verses without permission; full licensing via tpt@broadstreetpublishing.com; removed from Bible Gateway in 2022 due to disputes |
-| ERV | Bible League International | No public API; must contact directly |
+| Translation | Publisher                  | Findings                                                                                                                                  |
+| ----------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| AMP / AMPC  | The Lockman Foundation     | Permission to Quote form for print/web up to 1,000 verses; no developer API; bulk/app licensing requires written agreement                |
+| NLT         | Tyndale House Publishers   | NLT API available (see above); bulk licensing via permissions@tyndale.com                                                                 |
+| MSG         | NavPress / Tyndale         | Up to 500 verses without permission; full app licensing via permissions@tyndale.com                                                       |
+| TPT         | BroadStreet Publishing     | Up to 250 verses without permission; full licensing via tpt@broadstreetpublishing.com; removed from Bible Gateway in 2022 due to disputes |
+| ERV         | Bible League International | No public API; must contact directly                                                                                                      |
 
 **Verdict:** Viable long-term path, parallel to DBL membership. Each publisher agreement is independent, sequential, and takes months. Not viable as an MVP-blocking dependency.
 
@@ -147,7 +153,8 @@ api.bible has already negotiated access to copyrighted translations with publish
 
 ### 3. Offline storage is permitted for licensed subscribers
 
-Section 11 of the api.bible Terms and Conditions (Content Recency Requirements) reads: *"If you store API.Bible Content and/or Third Party IP Content offline..."* — this clause implicitly permits offline storage for active subscribers, subject to:
+Section 11 of the api.bible Terms and Conditions (Content Recency Requirements) reads: _"If you store API.Bible Content and/or Third Party IP Content offline..."_ — this clause implicitly permits offline storage for active subscribers, subject to:
+
 - Refreshing content at least every 30 days
 - Deleting content within 24 hours if api.bible removes it
 - Maintaining an active licensed subscription
@@ -166,12 +173,12 @@ The Starter plan is free for non-commercial use, includes KJV (public domain) an
 
 ## Known Risks and Mitigations
 
-| Risk | Mitigation |
-|---|---|
-| api.bible terminates the account or removes a translation | Content must be removed within 72 hours per ToS. Design the refresh job to handle graceful removal. Accept dependency risk for MVP stage. |
-| TPT or ERV not in api.bible catalog | Fall back to direct publisher outreach. These can be added incrementally after launch. |
-| "Systematically extracting data" prohibition challenged | Section 11 is the explicit permission for offline storage. Keep an active paid subscription. Refresh on schedule. Do not extract beyond what is needed for the licensed translations. |
-| api.bible pricing changes | Budget for $10/month per translation. At 7 translations, maximum cost is $70/month, well within ministry budget. |
+| Risk                                                      | Mitigation                                                                                                                                                                            |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| api.bible terminates the account or removes a translation | Content must be removed within 72 hours per ToS. Design the refresh job to handle graceful removal. Accept dependency risk for MVP stage.                                             |
+| TPT or ERV not in api.bible catalog                       | Fall back to direct publisher outreach. These can be added incrementally after launch.                                                                                                |
+| "Systematically extracting data" prohibition challenged   | Section 11 is the explicit permission for offline storage. Keep an active paid subscription. Refresh on schedule. Do not extract beyond what is needed for the licensed translations. |
+| api.bible pricing changes                                 | Budget for $10/month per translation. At 7 translations, maximum cost is $70/month, well within ministry budget.                                                                      |
 
 ---
 

@@ -67,9 +67,7 @@
   "paths": {
     "/bibles": {
       "get": {
-        "tags": [
-          "Bibles"
-        ],
+        "tags": ["Bibles"],
         "description": "Lists `Bible` objects authorized for the current API Key. This includes Creative Commons and Public Domain Bibles, as well as any Bibles licensed via a **Starter** or **Pro Plan**.\n\nA `Bible` object represents a single translation (NIV, ESV, etc.) of the Bible. Each Bible is accessible via its **Bible ID**, a string\nconsisting of a 16-digit unique string followed by a _publication number_ (`-01`, `-02`). A few popular examples are:\n\n| Bible                                  | Bible ID              |\n| -------------------------------------- | --------------------- |\n| New International Version (**NIV**)    | `78a9f6124f344018-01` |\n| New American Standard Bible (**NASB**) | `a761ca71e0b3ddcf-01` |\n| Christian Standard Bible (**CSB**)     | `a556c5305ee15c3f-01` |",
         "operationId": "getBibles",
         "parameters": [
@@ -157,9 +155,7 @@
     },
     "/bibles/{bibleId}": {
       "get": {
-        "tags": [
-          "Bibles"
-        ],
+        "tags": ["Bibles"],
         "description": "Gets a single `Bible` object using the given `bibleId`. \n\nA `Bible` object represents a single translation (NIV, ESV, etc.) of the Bible. Each Bible is accessible via its **Bible ID**, a string\nconsisting of a 16-digit unique string followed by a _publication number_ (`-01`, `-02`). A few popular examples are:\n\n| Bible                                  | Bible ID              |\n| -------------------------------------- | --------------------- |\n| New International Version (**NIV**)    | `78a9f6124f344018-01` |\n| New American Standard Bible (**NASB**) | `a761ca71e0b3ddcf-01` |\n| Christian Standard Bible (**CSB**)     | `a556c5305ee15c3f-01` |",
         "operationId": "getBible",
         "responses": {
@@ -168,9 +164,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -211,9 +205,7 @@
     },
     "/bibles/{bibleId}/books": {
       "get": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "description": "Lists `Book` objects for a given `bibleId`\n\nA `Book` object represents a single book (Matthew, Mark, etc.) of a single Bible.\nEach `Book` is accessible via a **Book ID**, a 3-digit code representing the book's name.\nA few examples are:\n\n| Book Name | Book ID |\n| --------- | ------- |\n| Genesis   | `GEN`   |\n| Mark      | `MRK`   |\n| 1 John    | `1JN`   |",
         "operationId": "getBooks",
         "parameters": [
@@ -230,9 +222,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -272,9 +262,7 @@
     },
     "/bibles/{bibleId}/books/{bookId}": {
       "get": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "description": "Gets a single `Book` object for a given `bibleId` and `bookId`. \n\nA `Book` object represents a single book (Matthew, Mark, etc.) of a single Bible.\nEach `Book` is accessible via a **Book ID**, a 3-digit code representing the book's name.\nA few examples are:\n\n| Book Name | Book ID |\n| --------- | ------- |\n| Genesis   | `GEN`   |\n| Mark      | `MRK`   |\n| 1 John    | `1JN`   |",
         "operationId": "getBook",
         "parameters": [
@@ -288,9 +276,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -334,9 +320,7 @@
     },
     "/bibles/{bibleId}/books/{bookId}/chapters": {
       "get": {
-        "tags": [
-          "Chapters"
-        ],
+        "tags": ["Chapters"],
         "description": "Lists `Chapter` objects for a given `bibleId` and `bookId`\n\nA `Chapter` object represents a single chapter of the Bible. Each Chapter is accessible via its **Chapter ID**,\na string consisting of a [Book](#/components/schemas/Book) ID and a chapter number. A few examples are:\n\n| Chapter       | Chapter ID |\n| ------------- | ---------- |\n| Genesis 1     | `GEN.1`    |\n| John 3        | `JHN.3`    |\n| Revelation 22 | `REV.22`   |\n\n*Note: This endpoint does not return verse content*",
         "operationId": "getChapters",
         "responses": {
@@ -345,9 +329,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -394,9 +376,7 @@
     },
     "/bibles/{bibleId}/chapters/{chapterId}": {
       "get": {
-        "tags": [
-          "Chapters"
-        ],
+        "tags": ["Chapters"],
         "description": "Gets a single `Chapter` object for a given `bibleId` and `chapterId`.\n\nA `Chapter` object represents a single chapter of the Bible. Each Chapter is accessible via its **Chapter ID**,\na string consisting of a [Book](https://docs.api.bible/guides/books) ID and a chapter number. A few examples are:\n\n| Chapter       | Chapter ID |\n| ------------- | ---------- |\n| Genesis 1     | `GEN.1`    |\n| John 3        | `JHN.3`    |\n| Revelation 22 | `REV.22`   |\n\nIn addition to information about the given chapter, this endpoint will also return all verse content included in that chapter within the `content` field.",
         "operationId": "getChapter",
         "parameters": [
@@ -428,10 +408,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data",
-                    "meta"
-                  ],
+                  "required": ["data", "meta"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -478,9 +455,7 @@
     },
     "/bibles/{bibleId}/passages/{passageId}": {
       "get": {
-        "tags": [
-          "Passages"
-        ],
+        "tags": ["Passages"],
         "description": "Gets a `Passage` object for a given `bibleId` and `passageId`.\n\nA `Passage` object represents an arbitrary range of verses from the Bible. These ranges are not predefined values, but instead depend\non the given input, known as a **Passage ID**. A **Passsage ID** consists of two [Verse](https://docs.api.bible/guides/verses) IDs separated by a `-`. These\n**Verse IDs** can span chapters and books, though passages are limited to 200 verses.\nA few passage examples are:\n\n| Verse Range                             | Passage ID          |\n| --------------------------------------- | ------------------- |\n| Genesis 1:1 - Genesis 2:3               | `GEN.1.1-GEN.2.3`   |\n| John 3:1 - John 3:16                    | `JHN.3:1-JHN.3.16`  |\n| 1 Corinthians 16:1 - 2 Corinthians 1:23 | `1CO.16.1-2CO.1.23` |\n\nIn addition to information about the given passage, this endpoint will also return all verse content included in that passage within the `content` field.\n",
         "operationId": "getPassage",
         "parameters": [
@@ -515,10 +490,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data",
-                    "meta"
-                  ],
+                  "required": ["data", "meta"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -565,9 +537,7 @@
     },
     "/bibles/{bibleId}/books/{bookId}/sections": {
       "get": {
-        "tags": [
-          "Sections"
-        ],
+        "tags": ["Sections"],
         "description": "Lists `Section` objects for a given `bibleId` and `bookId`\n\nA `Section` object represents a known range of verses in the Bible, typically tied to a story. Each Section is accessible via its **Section ID**,\na string consisting of a [Book](https://docs.api.bible/guides/books) ID and a section number. Not every Bible has sections enabled. For Bibles with sections enabled,\nsections are sequential and _should_ cover nearly every verse if queried in order.\nA few examples from the book of Genesis are:\n\n| Section Title | Verse Range                | Section ID |\n| ------------- | -------------------------- | ---------- |\n| The Beginning | Genesis 1:1 - Genesis 2:3  | `GEN.S1`   |\n| Adam and Eve  | Genesis 2:4 - Genesis 2:25 | `GEN.S2`   |\n| The Fall      | Genesis 3:1 - Genesis 3:24 | `GEN.S3`   |\n\n*Note: This endpoint does not return verse content*\n",
         "operationId": "getBookSections",
         "responses": {
@@ -576,9 +546,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -625,9 +593,7 @@
     },
     "/bibles/{bibleId}/chapters/{chapterId}/sections": {
       "get": {
-        "tags": [
-          "Sections"
-        ],
+        "tags": ["Sections"],
         "description": "Lists `Section` objects for a given `bibleId` and `chapterId`\n\nLists `Section` objects for a given `bibleId` and `bookId`\n\nA `Section` object represents a known range of verses in the Bible, typically tied to a story. Each Section is accessible via its **Section ID**,\na string consisting of a [Book](https://docs.api.bible/guides/books) ID and a section number. Not every Bible has sections enabled. For Bibles with sections enabled,\nsections are sequential and _should_ cover nearly every verse if queried in order.\nA few examples from the book of Genesis are:\n\n| Section Title | Verse Range                | Section ID |\n| ------------- | -------------------------- | ---------- |\n| The Beginning | Genesis 1:1 - Genesis 2:3  | `GEN.S1`   |\n| Adam and Eve  | Genesis 2:4 - Genesis 2:25 | `GEN.S2`   |\n| The Fall      | Genesis 3:1 - Genesis 3:24 | `GEN.S3`   |\n\n*Note: This endpoint does not return verse content*\n",
         "operationId": "getChapterSections",
         "responses": {
@@ -636,9 +602,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -685,9 +649,7 @@
     },
     "/bibles/{bibleId}/sections/{sectionId}": {
       "get": {
-        "tags": [
-          "Sections"
-        ],
+        "tags": ["Sections"],
         "description": "Gets a single `Section` object for a given `bibleId` and `sectionId`. \n\nLists `Section` objects for a given `bibleId` and `bookId`\n\nA `Section` object represents a known range of verses in the Bible, typically tied to a story. Each Section is accessible via its **Section ID**,\na string consisting of a [Book](https://docs.api.bible/guides/books) ID and a section number. Not every Bible has sections enabled. For Bibles with sections enabled,\nsections are sequential and _should_ cover nearly every verse if queried in order.\nA few examples from the book of Genesis are:\n\n| Section Title | Verse Range                | Section ID |\n| ------------- | -------------------------- | ---------- |\n| The Beginning | Genesis 1:1 - Genesis 2:3  | `GEN.S1`   |\n| Adam and Eve  | Genesis 2:4 - Genesis 2:25 | `GEN.S2`   |\n| The Fall      | Genesis 3:1 - Genesis 3:24 | `GEN.S3`   |\n\nIn addition to information about the given section, this endpoint will also return all verse content included in that section\nwithin the `content` field.\n",
         "operationId": "getSection",
         "parameters": [
@@ -719,10 +681,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data",
-                    "meta"
-                  ],
+                  "required": ["data", "meta"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -769,9 +728,7 @@
     },
     "/bibles/{bibleId}/chapters/{chapterId}/verses": {
       "get": {
-        "tags": [
-          "Verses"
-        ],
+        "tags": ["Verses"],
         "description": "Lists `Verse` objects for a given `bibleId` and `chapterId`\n\nA `Verse` object represents a verse in the Bible. Each Verse is accessible via its **Verse ID**,\na string consisting of a [Book](https://docs.api.bible/guides/books) ID, a chapter number, and a verse number. A few examples are:\n\n| Verse           | Verse ID   |\n| --------------- | ---------- |\n| Genesis 1:1     | `GEN.1.1`  |\n| John 3:16       | `JHN.3.16` |\n| Revelation 21.4 | `REV.21.4` |\n\n*Note: This endpoint does not return verse content*\n",
         "operationId": "getVerses",
         "responses": {
@@ -780,9 +737,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -829,9 +784,7 @@
     },
     "/bibles/{bibleId}/verses/{verseId}": {
       "get": {
-        "tags": [
-          "Verses"
-        ],
+        "tags": ["Verses"],
         "description": "Gets a `Verse` object for a given `bibleId` and `verseId`.\n\nA `Verse` object represents a verse in the Bible. Each Verse is accessible via its **Verse ID**,\na string consisting of a [Book](https://docs.api.bible/guides/books) ID, a chapter number, and a verse number. A few examples are:\n\n| Verse           | Verse ID   |\n| --------------- | ---------- |\n| Genesis 1:1     | `GEN.1.1`  |\n| John 3:16       | `JHN.3.16` |\n| Revelation 21.4 | `REV.21.4` |\n\nIn addition to information about the given verse, this endpoint will also return all verse content\nwithin the `content` field.\n",
         "operationId": "getVerse",
         "parameters": [
@@ -866,10 +819,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data",
-                    "meta"
-                  ],
+                  "required": ["data", "meta"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -916,9 +866,7 @@
     },
     "/bibles/{bibleId}/search": {
       "get": {
-        "tags": [
-          "Search"
-        ],
+        "tags": ["Search"],
         "description": "A search will attempt to match all verses with the list of keywords provided in the query string.\nThe order of the keywords does not matter, however _all listed keywords must be\npresent in a verse for it to be considered a match_.\n\nWildcard searches are supported, and can be used to match partial results:\n\n| Wildcard | Description                    | Example                                                      |\n| -------- | ------------------------------ | ------------------------------------------------------------ |\n| `*`      | Matches any character sequence | \"wo\\*d\" finds text such as \"word\", \"world\", and \"worshipped\" |\n| `?`      | Matches any single character   | \"l?ve\" finds text such as \"live\" and \"love\"                  |\n\nThe `text` property of each search result contains only the verse text, it does not\ncontain footnote references or additional formatting. However, more information on a verse can be queried directly by\n[fetching a single verse](https://docs.api.bible/guides/verses#fetching-a-single-verse).\n",
         "operationId": "searchBible",
         "parameters": [
@@ -956,11 +904,7 @@
             "schema": {
               "type": "string",
               "default": "relevance",
-              "enum": [
-                "relevance",
-                "canonical",
-                "reverse-canonical"
-              ]
+              "enum": ["relevance", "canonical", "reverse-canonical"]
             }
           },
           {
@@ -978,12 +922,7 @@
             "description": "Sets the fuzziness of a search to account for misspellings. Values can be 0, 1, 2, or AUTO. Defaults to AUTO which varies depending on the\n",
             "schema": {
               "type": "string",
-              "enum": [
-                "AUTO",
-                "0",
-                "1",
-                "2"
-              ]
+              "enum": ["AUTO", "0", "1", "2"]
             }
           }
         ],
@@ -993,10 +932,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data",
-                    "meta"
-                  ],
+                  "required": ["data", "meta"],
                   "type": "object",
                   "properties": {
                     "query": {
@@ -1043,9 +979,7 @@
     },
     "/audio-bibles": {
       "get": {
-        "tags": [
-          "Audio Bibles"
-        ],
+        "tags": ["Audio Bibles"],
         "description": "Lists `AudioBible` objects authorized for current API Key.\n\n**Audio Bibles** are nearly identical to [Bibles](https://docs.api.bible/guides/bibles),\nincluding their content structure. Audio Bibles, however, have one audio file for each chapter and therefore cannot be queried at the verse level. This is why\nAudio Bibles are queried separately from normal Bibles.\n\nAudio Bible availability via API.Bible requires special licensing. For more information, please reach out to [support@api.bible](mailto:support@api.bible).\n",
         "operationId": "getAudioBibles",
         "parameters": [
@@ -1104,9 +1038,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -1137,9 +1069,7 @@
     },
     "/audio-bibles/{bibleId}": {
       "get": {
-        "tags": [
-          "Audio Bibles"
-        ],
+        "tags": ["Audio Bibles"],
         "description": "Gets a single `AudioBible` for a given `bibleId`\n\nAn `AudioBible` object represents a single auditory translation (NIV, ESV, etc.) of the Bible. Each Bible is accessible via its **Bible ID**, a string\nconsisting of a 16-digit unique string followed by a _publication number_ (`-01`, `-02`). A few popular examples are:\n\n| Bible                                  | Bible ID              |\n| -------------------------------------- | --------------------- |\n| New International Version (**NIV**)    | `78a9f6124f344018-01` |\n| New American Standard Bible (**NASB**) | `a761ca71e0b3ddcf-01` |\n| Christian Standard Bible (**CSB**)     | `a556c5305ee15c3f-01` |",
         "operationId": "getAudioBible",
         "responses": {
@@ -1148,9 +1078,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -1191,9 +1119,7 @@
     },
     "/audio-bibles/{bibleId}/books": {
       "get": {
-        "tags": [
-          "Audio Bibles"
-        ],
+        "tags": ["Audio Bibles"],
         "description": "Lists `Book` objects for a given `bibleId`\n\nA `Book` object represents a single book (Matthew, Mark, etc.) of a single Bible.\nEach `Book` is accessible via a **Book ID**, a 3-digit code representing the book's name.\nA few examples are:\n\n| Book Name | Book ID |\n| --------- | ------- |\n| Genesis   | `GEN`   |\n| Mark      | `MRK`   |\n| 1 John    | `1JN`   |",
         "operationId": "getAudioBooks",
         "parameters": [
@@ -1210,9 +1136,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -1259,9 +1183,7 @@
     },
     "/audio-bibles/{bibleId}/books/{bookId}": {
       "get": {
-        "tags": [
-          "Audio Bibles"
-        ],
+        "tags": ["Audio Bibles"],
         "description": "Gets a single `Book` object for a given `bibleId` and `bookId`\n\nA `Book` object represents a single book (Matthew, Mark, etc.) of a single Bible.\nEach `Book` is accessible via a **Book ID**, a 3-digit code representing the book's name.\nA few examples are:\n\n| Book Name | Book ID |\n| --------- | ------- |\n| Genesis   | `GEN`   |\n| Mark      | `MRK`   |\n| 1 John    | `1JN`   |\n",
         "operationId": "getAudioBook",
         "parameters": [
@@ -1275,9 +1197,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -1321,9 +1241,7 @@
     },
     "/audio-bibles/{bibleId}/books/{bookId}/chapters": {
       "get": {
-        "tags": [
-          "Audio Bibles"
-        ],
+        "tags": ["Audio Bibles"],
         "description": "Lists `Chapter` objects for a given `bibleId` and `bookId`\n\nA `Chapter` object represents a single chapter of the Bible. Each Chapter is accessible via its **Chapter ID**,\na string consisting of a [Book](https://docs.api.bible/guides/books) ID and a chapter number. A few examples are:\n\n| Chapter       | Chapter ID |\n| ------------- | ---------- |\n| Genesis 1     | `GEN.1`    |\n| John 3        | `JHN.3`    |\n| Revelation 22 | `REV.22`   |\n\n*Note: This endpoint does not return verse content*\n",
         "operationId": "getAudioChapters",
         "parameters": [
@@ -1343,9 +1261,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data"
-                  ],
+                  "required": ["data"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -1392,9 +1308,7 @@
     },
     "/audio-bibles/{bibleId}/chapters/{chapterId}": {
       "get": {
-        "tags": [
-          "Audio Bibles"
-        ],
+        "tags": ["Audio Bibles"],
         "description": "Gets a single `AudioChapter` object for a given `bible` and `chapterId`.\n\nA presigned link to the mp3 audio file for this audio chapter will be included in the `resourceUrl` field. This link is unique to your request and will\nwill expire, so it is recommended to download that audio file using that link as quickly as you are able. It is **not** recommended\nthat you stream audio directly from the provided link, as you will run into a number of ongoing issues.\n\nSome audio chapters will include `timecodes`. These allow you to match verses in a chapter to a specific time code in the audio file.\nThis can be helpful if you are using both text and audio Bibles and would like to highlight the verse as it is being read.",
         "operationId": "getAudioChapter",
         "parameters": [
@@ -1414,10 +1328,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "data",
-                    "meta"
-                  ],
+                  "required": ["data", "meta"],
                   "type": "object",
                   "properties": {
                     "data": {
@@ -1516,11 +1427,7 @@
             "description": "Countries this Bible is available in",
             "items": {
               "type": "object",
-              "required": [
-                "id",
-                "name",
-                "nameLocal"
-              ],
+              "required": ["id", "name", "nameLocal"],
               "properties": {
                 "id": {
                   "type": "string"
@@ -1556,10 +1463,7 @@
           },
           "type": {
             "description": "The type of Bible",
-            "enum": [
-              "text",
-              "audio"
-            ]
+            "enum": ["text", "audio"]
           },
           "updatedAt": {
             "type": "string",
@@ -1584,13 +1488,7 @@
         },
         "description": "A **Book** object represents a single book (Matthew, Mark, etc.) of a single Bible.",
         "title": "Book",
-        "required": [
-          "id",
-          "bibleId",
-          "abbreviation",
-          "name",
-          "nameLong"
-        ],
+        "required": ["id", "bibleId", "abbreviation", "name", "nameLong"],
         "properties": {
           "id": {
             "type": "string",
@@ -1621,13 +1519,7 @@
         }
       },
       "ChapterSummary": {
-        "required": [
-          "bibleId",
-          "bookId",
-          "id",
-          "number",
-          "reference"
-        ],
+        "required": ["bibleId", "bookId", "id", "number", "reference"],
         "type": "object",
         "properties": {
           "id": {
@@ -1706,11 +1598,7 @@
           "next": {
             "type": "object",
             "description": "Information about the next **Chapter**, if one exists. Can be used to navigate the Bible one chapter at a time.",
-            "required": [
-              "id",
-              "bookId",
-              "number"
-            ],
+            "required": ["id", "bookId", "number"],
             "properties": {
               "id": {
                 "type": "string",
@@ -1729,11 +1617,7 @@
           "previous": {
             "type": "object",
             "description": "Information about the previous **Chapter**, if one exists. Can be used to navigate the Bible backwards one chapter at a time.",
-            "required": [
-              "id",
-              "bookId",
-              "number"
-            ],
+            "required": ["id", "bookId", "number"],
             "properties": {
               "id": {
                 "type": "string",
@@ -1902,10 +1786,7 @@
           "next": {
             "type": "object",
             "description": "Information about the next **Verse**, if one exists. Can be used to navigate the Bible one verse at a time.",
-            "required": [
-              "id",
-              "bookId"
-            ],
+            "required": ["id", "bookId"],
             "properties": {
               "id": {
                 "type": "string",
@@ -1920,10 +1801,7 @@
           "previous": {
             "type": "object",
             "description": "Information about the previous **Chapter**, if one exists. Can be used to navigate the Bible backwards one chapter at a time.",
-            "required": [
-              "id",
-              "bookId"
-            ],
+            "required": ["id", "bookId"],
             "properties": {
               "id": {
                 "type": "string",
@@ -2047,10 +1925,7 @@
           "next": {
             "type": "object",
             "description": "Information about the next **Section**, if one exists. Can be used to navigate the Bible one section at a time.",
-            "required": [
-              "id",
-              "title"
-            ],
+            "required": ["id", "title"],
             "properties": {
               "id": {
                 "type": "string",
@@ -2065,10 +1940,7 @@
           "previous": {
             "type": "object",
             "description": "Information about the previous **Section**, if one exists. Can be used to navigate the Bible backwards one verse at a time.",
-            "required": [
-              "id",
-              "title"
-            ],
+            "required": ["id", "title"],
             "properties": {
               "id": {
                 "type": "string",
@@ -2259,11 +2131,7 @@
             "description": "Allows you to match verses in a chapter to a specific time code in the audio file. This can be helpful if you are using both text and audio Bibles and would like to highlight a verse as it is being read.",
             "items": {
               "type": "object",
-              "required": [
-                "end",
-                "start",
-                "verseId"
-              ],
+              "required": ["end", "start", "verseId"],
               "properties": {
                 "end": {
                   "type": "string",
@@ -2291,11 +2159,7 @@
           "next": {
             "type": "object",
             "description": "Information about the next **AudioChapter**, if one exists. Can be used to navigate the Bible one audio chapter at a time.",
-            "required": [
-              "id",
-              "bookId",
-              "number"
-            ],
+            "required": ["id", "bookId", "number"],
             "properties": {
               "id": {
                 "type": "string",
@@ -2314,11 +2178,7 @@
           "previous": {
             "type": "object",
             "description": "Information about the previous **AudioChapter**, if one exists. Can be used to navigate the Bible backwards one chapter at a time.",
-            "required": [
-              "id",
-              "bookId",
-              "number"
-            ],
+            "required": ["id", "bookId", "number"],
             "properties": {
               "id": {
                 "type": "string",
@@ -2345,13 +2205,7 @@
         "x-stoplight": {
           "id": "b1r5qj45vnqhn"
         },
-        "required": [
-          "id",
-          "name",
-          "nameLocal",
-          "script",
-          "scriptDirection"
-        ],
+        "required": ["id", "name", "nameLocal", "script", "scriptDirection"],
         "properties": {
           "id": {
             "type": "string",
@@ -2372,10 +2226,7 @@
           },
           "scriptDirection": {
             "description": "The direction this language writes",
-            "enum": [
-              "LTR",
-              "RTL"
-            ],
+            "enum": ["LTR", "RTL"],
             "default": "LTR"
           }
         }
@@ -2387,9 +2238,7 @@
         },
         "title": "Request Meta",
         "description": "Metadata returned alongside verse content. Primarily used for view tracking.",
-        "required": [
-          "fumsToken"
-        ],
+        "required": ["fumsToken"],
         "properties": {
           "fumsToken": {
             "type": "string",
@@ -2409,11 +2258,7 @@
         "schema": {
           "type": "string",
           "default": "html",
-          "enum": [
-            "html",
-            "json",
-            "text"
-          ]
+          "enum": ["html", "json", "text"]
         }
       },
       "include-notes": {

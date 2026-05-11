@@ -12,11 +12,11 @@ Bite-sized, PR-ready user stories for implementing SearchVerse. Each story is si
 
 ## Sizing Rules
 
-| Size | Duration | Acceptance Criteria | Decomposition |
-|------|----------|---------------------|----------------|
-| **XS** | ~0.25 day | 1–2 focused checks | Single slice |
-| **S** | ~0.5 day | up to 4 focused checks | Single slice or a+b |
-| **M** | ~1.0 day | up to 6 focused checks | MUST be a/b/c slices |
+| Size   | Duration  | Acceptance Criteria    | Decomposition        |
+| ------ | --------- | ---------------------- | -------------------- |
+| **XS** | ~0.25 day | 1–2 focused checks     | Single slice         |
+| **S**  | ~0.5 day  | up to 4 focused checks | Single slice or a+b  |
+| **M**  | ~1.0 day  | up to 6 focused checks | MUST be a/b/c slices |
 
 **Key Principle:** One story = One PR = Maximum 1 day
 
@@ -26,12 +26,12 @@ Bite-sized, PR-ready user stories for implementing SearchVerse. Each story is si
 
 These must be in place before any feature work begins.
 
-| Story | Priority | Dependencies | Description |
-|-------|----------|--------------|-------------|
-| INF-1 | P0 | None | NestJS project with Docker Compose, env config, and Railway deploy config |
-| INF-2 | P0 | INF-1 | Drizzle schema with migrations: `translations`, `books`, `verses` tables, `tsvector` column, GIN index |
-| INF-3 | P0 | INF-1 | api.bible HTTP client module — authenticated, typed, with error handling |
-| INF-4 | P0 | INF-2, INF-3 | Data ingestion CLI command — walks api.bible hierarchy for a given `bibleId` and seeds the database |
+| Story | Priority | Dependencies | Description                                                                                            |
+| ----- | -------- | ------------ | ------------------------------------------------------------------------------------------------------ |
+| INF-1 | P0       | None         | NestJS project with Docker Compose, env config, and Railway deploy config                              |
+| INF-2 | P0       | INF-1        | Drizzle schema with migrations: `translations`, `books`, `verses` tables, `tsvector` column, GIN index |
+| INF-3 | P0       | INF-1        | api.bible HTTP client module — authenticated, typed, with error handling                               |
+| INF-4 | P0       | INF-2, INF-3 | Data ingestion CLI command — walks api.bible hierarchy for a given `bibleId` and seeds the database    |
 
 ---
 
@@ -46,6 +46,7 @@ These must be in place before any feature work begins.
 **Size:** M
 
 **Parent Acceptance Criteria:**
+
 - Given a valid `bibleId`, all 66 books, their chapters, and all verse texts are fetched and upserted into PostgreSQL
 - `translations.last_synced_at` is updated on completion
 - Command is idempotent — re-running it for the same translation updates existing rows, does not duplicate
@@ -63,6 +64,7 @@ These must be in place before any feature work begins.
 **So that** the structural skeleton exists before verse text is written
 
 **Acceptance Criteria:**
+
 - `GET /bibles/{bibleId}/books` response is upserted into `books` table
 - All chapters for each book are iterated in canonical order
 - No verse text fetched in this step
@@ -79,6 +81,7 @@ These must be in place before any feature work begins.
 **So that** the translation is ready for full-text search
 
 **Acceptance Criteria:**
+
 - `GET /bibles/{bibleId}/chapters/{chapterId}/verses` fetched for every chapter
 - Each verse upserted into `verses` table with correct `translation_id`, `book_id`, `chapter`, `verse`, and `text`
 - `text_search` (`tsvector`) column populated via trigger or explicit update after insert
@@ -95,6 +98,7 @@ These must be in place before any feature work begins.
 **So that** partial runs or content updates do not corrupt the database
 
 **Acceptance Criteria:**
+
 - Running ingestion twice for the same `bibleId` produces no duplicate rows
 - Updated verse text from api.bible overwrites the old text on re-run
 - `translations.last_synced_at` updated only on full successful completion
@@ -113,6 +117,7 @@ These must be in place before any feature work begins.
 **Size:** XS
 
 **Acceptance Criteria:**
+
 - `GET /translations` returns all rows from the `translations` table
 - Response includes `id`, `abbreviation`, `name`, `language`, `last_synced_at`
 - Returns empty array (not 404) if no translations have been ingested yet
@@ -130,6 +135,7 @@ These must be in place before any feature work begins.
 **Size:** XS
 
 **Acceptance Criteria:**
+
 - `GET /translations/:id` returns a single translation by its `id`
 - Returns 404 with a meaningful error message if the `id` does not exist
 - Response includes `copyright` field
@@ -147,6 +153,7 @@ These must be in place before any feature work begins.
 **Size:** S
 
 **Acceptance Criteria:**
+
 - A `@nestjs/schedule` cron job runs every 30 days
 - The job re-runs ingestion for every translation where `last_synced_at` is older than 30 days
 - If api.bible has removed or modified a verse, the local record is updated within the next refresh cycle
@@ -167,6 +174,7 @@ These must be in place before any feature work begins.
 **Size:** M
 
 **Parent Acceptance Criteria:**
+
 - `GET /search?q=love+is+patient&translations=KJV,NLT` returns matching verses from both translations
 - Results are ordered by relevance rank (PostgreSQL `ts_rank`)
 - Each result contains `reference`, `translation`, `book`, `chapter`, `verse`, `text`, and `copyright`
@@ -185,6 +193,7 @@ These must be in place before any feature work begins.
 **So that** I can verify the core search mechanism works correctly
 
 **Acceptance Criteria:**
+
 - `GET /search?q=patience` returns verses from KJV where the word appears
 - Results include `text`, `reference`, and `copyright`
 - `ts_rank` used for ordering — most relevant verses first
@@ -201,6 +210,7 @@ These must be in place before any feature work begins.
 **So that** I can see how different translations render the same concept
 
 **Acceptance Criteria:**
+
 - `GET /search?q=patience&translations=KJV,NLT,AMP` returns results from all three
 - Results interleaved — not grouped by translation
 - Each result identifies its translation via the `translation` field
@@ -217,6 +227,7 @@ These must be in place before any feature work begins.
 **So that** I know the search ran but found nothing
 
 **Acceptance Criteria:**
+
 - Query with no matches returns `{ "query": "...", "total": 0, "results": [] }`
 - HTTP status is 200, not 404
 - Response is well-formed and consistent with non-empty responses
@@ -234,6 +245,7 @@ These must be in place before any feature work begins.
 **Size:** S
 
 **Acceptance Criteria:**
+
 - `GET /search?q=love&limit=10&offset=0` returns the first 10 results
 - `GET /search?q=love&limit=10&offset=10` returns the next 10 results
 - Response includes `total` count of all matches (regardless of page)
@@ -253,6 +265,7 @@ These must be in place before any feature work begins.
 **Size:** S
 
 **Acceptance Criteria:**
+
 - `GET /search?q=love&range=NT` limits results to New Testament books
 - `GET /search?q=love&range=JHN` limits results to the book of John
 - `range` parameter accepts testament (`OT`, `NT`) or book ID (`GEN`, `JHN`, etc.)
@@ -273,6 +286,7 @@ These must be in place before any feature work begins.
 **Size:** S
 
 **Acceptance Criteria:**
+
 - `GET /verses/JHN.3.16?translations=KJV,NLT,AMP` returns the verse from all three translations
 - Response includes `reference`, `book`, `chapter`, `verse`, and a `translations` array
 - Each translation entry includes `id`, `text`, and `copyright`
@@ -292,6 +306,7 @@ These must be in place before any feature work begins.
 **Size:** XS
 
 **Acceptance Criteria:**
+
 - `GET /verses/INVALID` returns 400 with an error explaining the expected format
 - `GET /verses/JHN.99.1` (non-existent chapter) returns 404
 - Error responses use a consistent shape: `{ "error": "...", "statusCode": 400 }`
@@ -311,6 +326,7 @@ These must be in place before any feature work begins.
 **Size:** XS
 
 **Acceptance Criteria:**
+
 - Every entry in `/search` results includes a `copyright` field with the full attribution string
 - Every entry in `/verses/:reference` translations array includes a `copyright` field
 - KJV returns `"King James Version. Public Domain."`
@@ -330,6 +346,7 @@ These must be in place before any feature work begins.
 **Size:** S
 
 **Acceptance Criteria:**
+
 - Running `remove-translation --id <bibleId>` deletes all rows in `verses` where `translation_id = bibleId`
 - The `translations` row itself is also deleted
 - The command confirms before deleting and reports how many verse rows were removed
