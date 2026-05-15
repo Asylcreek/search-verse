@@ -8,5 +8,8 @@ export const translations = pgTable('translations', {
   copyright: text('copyright').notNull(),
   lastSyncedAt: timestamp('last_synced_at'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().$onUpdate(() => new Date()).notNull(),
+  updatedAt: timestamp('updated_at')
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
 });

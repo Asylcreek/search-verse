@@ -46,12 +46,8 @@
           "name": "books_translation_id_translations_id_fk",
           "tableFrom": "books",
           "tableTo": "translations",
-          "columnsFrom": [
-            "translation_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["translation_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -59,10 +55,7 @@
       "compositePrimaryKeys": {
         "books_translation_id_book_id_pk": {
           "name": "books_translation_id_book_id_pk",
-          "columns": [
-            "translation_id",
-            "book_id"
-          ]
+          "columns": ["translation_id", "book_id"]
         }
       },
       "uniqueConstraints": {},
@@ -223,12 +216,8 @@
           "name": "verses_translation_id_translations_id_fk",
           "tableFrom": "verses",
           "tableTo": "translations",
-          "columnsFrom": [
-            "translation_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["translation_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -238,10 +227,7 @@
         "verses_translation_reference_unique": {
           "name": "verses_translation_reference_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "translation_id",
-            "reference"
-          ]
+          "columns": ["translation_id", "reference"]
         }
       },
       "policies": {},
@@ -253,10 +239,7 @@
     "public.testament": {
       "name": "testament",
       "schema": "public",
-      "values": [
-        "OT",
-        "NT"
-      ]
+      "values": ["OT", "NT"]
     }
   },
   "schemas": {},

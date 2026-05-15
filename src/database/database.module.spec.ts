@@ -15,7 +15,9 @@ describe('DatabaseModule', () => {
       imports: [ConfigModule.forRoot({ isGlobal: true }), DatabaseModule],
     })
       .overrideProvider(ConfigService)
-      .useValue({ getOrThrow: () => 'postgresql://user:pass@localhost:5432/test' })
+      .useValue({
+        getOrThrow: () => 'postgresql://user:pass@localhost:5432/test',
+      })
       .compile();
 
     const client = module.get(DRIZZLE_CLIENT);

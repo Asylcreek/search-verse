@@ -1,4 +1,10 @@
-import { integer, pgEnum, pgTable, primaryKey, varchar } from 'drizzle-orm/pg-core';
+import {
+  integer,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  varchar,
+} from 'drizzle-orm/pg-core';
 
 import { translations } from './translations.schema';
 
@@ -15,5 +21,5 @@ export const books = pgTable(
     testament: testamentEnum('testament').notNull(),
     position: integer('position').notNull(),
   },
-  (t) => [primaryKey({ columns: [t.translationId, t.bookId] })],
+  (t) => [primaryKey({ columns: [t.translationId, t.bookId] })]
 );

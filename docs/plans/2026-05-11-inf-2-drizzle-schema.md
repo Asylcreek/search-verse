@@ -20,6 +20,7 @@
 ## Task 1: Install Drizzle dependencies
 
 **Files:**
+
 - Modify: `package.json` (scripts section only — via pnpm commands)
 
 **Step 1: Install runtime dependencies**
@@ -55,6 +56,7 @@ Add inside the `"scripts"` block:
 ## Task 2: Create `translations` schema
 
 **Files:**
+
 - Create: `src/database/schema/translations.schema.ts`
 
 **Step 1: Write the schema**
@@ -86,12 +88,19 @@ pnpm exec tsc --noEmit
 ## Task 3: Create `books` schema
 
 **Files:**
+
 - Create: `src/database/schema/books.schema.ts`
 
 **Step 1: Write the schema**
 
 ```ts
-import { integer, pgEnum, pgTable, primaryKey, varchar } from 'drizzle-orm/pg-core';
+import {
+  integer,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  varchar,
+} from 'drizzle-orm/pg-core';
 
 import { translations } from './translations.schema';
 
@@ -108,7 +117,7 @@ export const books = pgTable(
     testament: testamentEnum('testament').notNull(),
     position: integer('position').notNull(),
   },
-  (t) => [primaryKey({ columns: [t.translationId, t.bookId] })],
+  (t) => [primaryKey({ columns: [t.translationId, t.bookId] })]
 );
 ```
 
@@ -124,12 +133,23 @@ pnpm exec tsc --noEmit
 ## Task 4: Create `verses` schema
 
 **Files:**
+
 - Create: `src/database/schema/verses.schema.ts`
 
 **Step 1: Write the schema**
 
 ```ts
-import { customType, index, integer, pgTable, text, timestamp, unique, uuid, varchar } from 'drizzle-orm/pg-core';
+import {
+  customType,
+  index,
+  integer,
+  pgTable,
+  text,
+  timestamp,
+  unique,
+  uuid,
+  varchar,
+} from 'drizzle-orm/pg-core';
 
 import { translations } from './translations.schema';
 
@@ -156,9 +176,12 @@ export const verses = pgTable(
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
   (t) => [
-    unique('verses_translation_reference_unique').on(t.translationId, t.reference),
+    unique('verses_translation_reference_unique').on(
+      t.translationId,
+      t.reference
+    ),
     index('verses_text_search_gin_idx').using('gin', t.textSearch),
-  ],
+  ]
 );
 ```
 
@@ -174,6 +197,7 @@ pnpm exec tsc --noEmit
 ## Task 5: Create schema index
 
 **Files:**
+
 - Create: `src/database/schema/index.ts`
 
 **Step 1: Write the index**
@@ -189,6 +213,7 @@ export * from './verses.schema';
 ## Task 6: Create `drizzle.config.ts`
 
 **Files:**
+
 - Create: `drizzle.config.ts` (project root, alongside `package.json`)
 
 **Step 1: Write config**
@@ -225,6 +250,7 @@ pnpm db:generate
 ```
 
 Expected output: something like:
+
 ```
 [✓] Your SQL migration file ➜ drizzle/migrations/0000_initial.sql
 ```
@@ -234,6 +260,7 @@ Expected output: something like:
 ## Task 8: Add tsvector trigger migration
 
 **Files:**
+
 - Create: `drizzle/migrations/0001_verses_text_search_trigger.sql`
 
 **Step 1: Write the SQL migration**
@@ -259,6 +286,7 @@ FOR EACH ROW EXECUTE FUNCTION verses_text_search_update();
 ## Task 9: Create `DatabaseModule`
 
 **Files:**
+
 - Create: `src/database/database.providers.ts`
 - Create: `src/database/database.module.ts`
 
@@ -314,6 +342,7 @@ pnpm exec tsc --noEmit
 ## Task 10: Write `DatabaseModule` unit test
 
 **Files:**
+
 - Create: `src/database/database.module.spec.ts`
 
 **Step 1: Write the failing test**
@@ -330,7 +359,9 @@ describe('DatabaseModule', () => {
       imports: [DatabaseModule],
     })
       .overrideProvider(ConfigService)
-      .useValue({ getOrThrow: () => 'postgresql://user:pass@localhost:5432/test' })
+      .useValue({
+        getOrThrow: () => 'postgresql://user:pass@localhost:5432/test',
+      })
       .compile();
 
     const client = module.get(DRIZZLE_CLIENT);
@@ -360,6 +391,7 @@ pnpm test -- --testPathPattern=database.module.spec
 ## Task 11: Wire `DatabaseModule` into `AppModule`
 
 **Files:**
+
 - Modify: `src/app.module.ts`
 
 **Step 1: Update the module**
@@ -372,10 +404,7 @@ import { DatabaseModule } from './database/database.module';
 import { validate } from './env-validation/env.validation';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true, validate }),
-    DatabaseModule,
-  ],
+  imports: [ConfigModule.forRoot({ isGlobal: true, validate }), DatabaseModule],
   controllers: [],
   providers: [],
 })
@@ -402,6 +431,7 @@ pnpm db:migrate
 ```
 
 Expected output:
+
 ```
 [✓] Migrations applied successfully
 ```
