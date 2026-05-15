@@ -15,12 +15,14 @@ async function bootstrap() {
 
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' });
 
-  await app.listen(process.env.PORT ?? 4000);
+  await app.listen(Number(process.env.PORT));
 
   process.on('unhandledRejection', async (reason: any) => {
     console.error(`Unhandled rejection, reason: ${reason.message}`);
 
     await app.close();
+
+    process.exit(1);
   });
 
   process.on('SIGTERM', async () => {

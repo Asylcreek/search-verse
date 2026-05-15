@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumberString, IsString } from 'class-validator';
 
 enum Environment {
   Development = 'development',
@@ -15,7 +15,7 @@ export class EnvDTO {
   @IsNotEmpty()
   DB_URI: string;
 
-  @IsString()
+  @IsNumberString()
   @IsNotEmpty()
-  DB_PASSWORD: string;
+  PORT: string;
 }
