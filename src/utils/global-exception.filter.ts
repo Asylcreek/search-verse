@@ -25,20 +25,31 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       const status = err.getStatus();
       const response = err.getResponse() as Record<string, unknown>;
 
-      if (status === HttpStatus.BAD_REQUEST && Array.isArray(response?.message)) {
+      if (
+        status === HttpStatus.BAD_REQUEST &&
+        Array.isArray(response?.message)
+      ) {
         return res
           .status(HttpStatus.BAD_REQUEST)
-          .json({ statusCode: HttpStatus.BAD_REQUEST, message: response.message[0] });
+          .json({
+            statusCode: HttpStatus.BAD_REQUEST,
+            message: response.message[0],
+          });
       }
 
       return res.status(status).json(response);
     }
 
     if (err instanceof ApiBibleError) {
-      this.logger.warn(`Upstream api.bible error [${err.status}] ${err.endpoint}: ${err.message}`);
+      this.logger.warn(
+        `Upstream api.bible error [${err.status}] ${err.endpoint}: ${err.message}`
+      );
       return res
         .status(HttpStatus.BAD_GATEWAY)
-        .json({ statusCode: HttpStatus.BAD_GATEWAY, message: 'Upstream service error' });
+        .json({
+          statusCode: HttpStatus.BAD_GATEWAY,
+          message: 'Upstream service error',
+        });
     }
 
     const message = err instanceof Error ? err.message : 'Unknown error';
@@ -54,6 +65,9 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     return res
       .status(HttpStatus.INTERNAL_SERVER_ERROR)
-      .json({ statusCode: HttpStatus.INTERNAL_SERVER_ERROR, message: 'Something went very wrong!' });
+      .json({
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Something went very wrong!',
+      });
   }
 }

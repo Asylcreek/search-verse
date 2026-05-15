@@ -26,12 +26,22 @@ export class ApiBibleService {
     return this.get<ApiBibleBook[]>(`/bibles/${bibleId}/books`);
   }
 
-  async getChapters(bibleId: string, bookId: string): Promise<ApiBibleChapterSummary[]> {
-    return this.get<ApiBibleChapterSummary[]>(`/bibles/${bibleId}/books/${bookId}/chapters`);
+  async getChapters(
+    bibleId: string,
+    bookId: string
+  ): Promise<ApiBibleChapterSummary[]> {
+    return this.get<ApiBibleChapterSummary[]>(
+      `/bibles/${bibleId}/books/${bookId}/chapters`
+    );
   }
 
-  async getVerses(bibleId: string, chapterId: string): Promise<ApiBibleVerseSummary[]> {
-    return this.get<ApiBibleVerseSummary[]>(`/bibles/${bibleId}/chapters/${chapterId}/verses`);
+  async getVerses(
+    bibleId: string,
+    chapterId: string
+  ): Promise<ApiBibleVerseSummary[]> {
+    return this.get<ApiBibleVerseSummary[]>(
+      `/bibles/${bibleId}/chapters/${chapterId}/verses`
+    );
   }
 
   async getVerse(bibleId: string, verseId: string): Promise<ApiBibleVerse> {
@@ -40,10 +50,15 @@ export class ApiBibleService {
     });
   }
 
-  private async get<T>(endpoint: string, params: Record<string, string> = {}): Promise<T> {
+  private async get<T>(
+    endpoint: string,
+    params: Record<string, string> = {}
+  ): Promise<T> {
     this.logger.debug(`GET ${endpoint}`);
     try {
-      const response = await firstValueFrom(this.http.get<{ data: T }>(endpoint, { params }));
+      const response = await firstValueFrom(
+        this.http.get<{ data: T }>(endpoint, { params })
+      );
       return response.data.data;
     } catch (err) {
       const axiosErr = err as AxiosError<{ message?: string }>;

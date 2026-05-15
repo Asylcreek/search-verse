@@ -15,6 +15,7 @@
 ## Task 1: Install `@nestjs/axios`
 
 **Files:**
+
 - Modify: `package.json` (via install command)
 
 **Step 1: Install the package**
@@ -36,6 +37,7 @@ Expected: both packages listed under dependencies.
 ## Task 2: Add `API_BIBLE_KEY` to env validation
 
 **Files:**
+
 - Modify: `src/env-validation/env.dto.ts`
 
 **Step 1: Write a failing test**
@@ -100,6 +102,7 @@ Expected: no TypeScript errors.
 ## Task 3: Create error and type definitions
 
 **Files:**
+
 - Create: `src/api-bible/api-bible.errors.ts`
 - Create: `src/api-bible/api-bible.types.ts`
 
@@ -111,7 +114,7 @@ export class ApiBibleError extends Error {
   constructor(
     public readonly status: number,
     public readonly endpoint: string,
-    message: string,
+    message: string
   ) {
     super(message);
     this.name = 'ApiBibleError';
@@ -186,6 +189,7 @@ Expected: no errors.
 ## Task 4: Implement `ApiBibleService` (TDD)
 
 **Files:**
+
 - Create: `src/api-bible/api-bible.service.spec.ts`
 - Create: `src/api-bible/api-bible.service.ts`
 
@@ -247,19 +251,27 @@ describe('ApiBibleService', () => {
 
   describe('getBibles', () => {
     it('returns typed array from response envelope', async () => {
-      const data: ApiBibleBible[] = [{ id: 'de4e12af7f28f599-02' } as ApiBibleBible];
-      jest.spyOn(httpService, 'get').mockReturnValue(of(mockAxiosResponse(data)));
+      const data: ApiBibleBible[] = [
+        { id: 'de4e12af7f28f599-02' } as ApiBibleBible,
+      ];
+      jest
+        .spyOn(httpService, 'get')
+        .mockReturnValue(of(mockAxiosResponse(data)));
       const result = await service.getBibles();
       expect(result).toEqual(data);
     });
 
     it('throws ApiBibleError on non-2xx', async () => {
-      jest.spyOn(httpService, 'get').mockReturnValue(throwError(() => mockAxiosError(401)));
+      jest
+        .spyOn(httpService, 'get')
+        .mockReturnValue(throwError(() => mockAxiosError(401)));
       await expect(service.getBibles()).rejects.toThrow(ApiBibleError);
     });
 
     it('logs warn on error', async () => {
-      jest.spyOn(httpService, 'get').mockReturnValue(throwError(() => mockAxiosError(401)));
+      jest
+        .spyOn(httpService, 'get')
+        .mockReturnValue(throwError(() => mockAxiosError(401)));
       await service.getBibles().catch(() => undefined);
       expect(Logger.prototype.warn).toHaveBeenCalled();
     });
@@ -268,56 +280,85 @@ describe('ApiBibleService', () => {
   describe('getBooks', () => {
     it('returns typed array', async () => {
       const data: ApiBibleBook[] = [{ id: 'GEN' } as ApiBibleBook];
-      jest.spyOn(httpService, 'get').mockReturnValue(of(mockAxiosResponse(data)));
+      jest
+        .spyOn(httpService, 'get')
+        .mockReturnValue(of(mockAxiosResponse(data)));
       const result = await service.getBooks('bibleId');
       expect(result).toEqual(data);
     });
 
     it('throws ApiBibleError on non-2xx', async () => {
-      jest.spyOn(httpService, 'get').mockReturnValue(throwError(() => mockAxiosError(404)));
+      jest
+        .spyOn(httpService, 'get')
+        .mockReturnValue(throwError(() => mockAxiosError(404)));
       await expect(service.getBooks('bibleId')).rejects.toThrow(ApiBibleError);
     });
   });
 
   describe('getChapters', () => {
     it('returns typed array', async () => {
-      const data: ApiBibleChapterSummary[] = [{ id: 'GEN.1' } as ApiBibleChapterSummary];
-      jest.spyOn(httpService, 'get').mockReturnValue(of(mockAxiosResponse(data)));
+      const data: ApiBibleChapterSummary[] = [
+        { id: 'GEN.1' } as ApiBibleChapterSummary,
+      ];
+      jest
+        .spyOn(httpService, 'get')
+        .mockReturnValue(of(mockAxiosResponse(data)));
       const result = await service.getChapters('bibleId', 'GEN');
       expect(result).toEqual(data);
     });
 
     it('throws ApiBibleError on non-2xx', async () => {
-      jest.spyOn(httpService, 'get').mockReturnValue(throwError(() => mockAxiosError(404)));
-      await expect(service.getChapters('bibleId', 'GEN')).rejects.toThrow(ApiBibleError);
+      jest
+        .spyOn(httpService, 'get')
+        .mockReturnValue(throwError(() => mockAxiosError(404)));
+      await expect(service.getChapters('bibleId', 'GEN')).rejects.toThrow(
+        ApiBibleError
+      );
     });
   });
 
   describe('getVerses', () => {
     it('returns typed array', async () => {
-      const data: ApiBibleVerseSummary[] = [{ id: 'GEN.1.1' } as ApiBibleVerseSummary];
-      jest.spyOn(httpService, 'get').mockReturnValue(of(mockAxiosResponse(data)));
+      const data: ApiBibleVerseSummary[] = [
+        { id: 'GEN.1.1' } as ApiBibleVerseSummary,
+      ];
+      jest
+        .spyOn(httpService, 'get')
+        .mockReturnValue(of(mockAxiosResponse(data)));
       const result = await service.getVerses('bibleId', 'GEN.1');
       expect(result).toEqual(data);
     });
 
     it('throws ApiBibleError on non-2xx', async () => {
-      jest.spyOn(httpService, 'get').mockReturnValue(throwError(() => mockAxiosError(404)));
-      await expect(service.getVerses('bibleId', 'GEN.1')).rejects.toThrow(ApiBibleError);
+      jest
+        .spyOn(httpService, 'get')
+        .mockReturnValue(throwError(() => mockAxiosError(404)));
+      await expect(service.getVerses('bibleId', 'GEN.1')).rejects.toThrow(
+        ApiBibleError
+      );
     });
   });
 
   describe('getVerse', () => {
     it('returns typed verse with content', async () => {
-      const data: ApiBibleVerse = { id: 'GEN.1.1', content: 'In the beginning...' } as ApiBibleVerse;
-      jest.spyOn(httpService, 'get').mockReturnValue(of(mockAxiosResponse(data)));
+      const data: ApiBibleVerse = {
+        id: 'GEN.1.1',
+        content: 'In the beginning...',
+      } as ApiBibleVerse;
+      jest
+        .spyOn(httpService, 'get')
+        .mockReturnValue(of(mockAxiosResponse(data)));
       const result = await service.getVerse('bibleId', 'GEN.1.1');
       expect(result).toEqual(data);
     });
 
     it('throws ApiBibleError on non-2xx', async () => {
-      jest.spyOn(httpService, 'get').mockReturnValue(throwError(() => mockAxiosError(404)));
-      await expect(service.getVerse('bibleId', 'GEN.1.1')).rejects.toThrow(ApiBibleError);
+      jest
+        .spyOn(httpService, 'get')
+        .mockReturnValue(throwError(() => mockAxiosError(404)));
+      await expect(service.getVerse('bibleId', 'GEN.1.1')).rejects.toThrow(
+        ApiBibleError
+      );
     });
   });
 });
@@ -364,12 +405,22 @@ export class ApiBibleService {
     return this.get<ApiBibleBook[]>(`/bibles/${bibleId}/books`);
   }
 
-  async getChapters(bibleId: string, bookId: string): Promise<ApiBibleChapterSummary[]> {
-    return this.get<ApiBibleChapterSummary[]>(`/bibles/${bibleId}/books/${bookId}/chapters`);
+  async getChapters(
+    bibleId: string,
+    bookId: string
+  ): Promise<ApiBibleChapterSummary[]> {
+    return this.get<ApiBibleChapterSummary[]>(
+      `/bibles/${bibleId}/books/${bookId}/chapters`
+    );
   }
 
-  async getVerses(bibleId: string, chapterId: string): Promise<ApiBibleVerseSummary[]> {
-    return this.get<ApiBibleVerseSummary[]>(`/bibles/${bibleId}/chapters/${chapterId}/verses`);
+  async getVerses(
+    bibleId: string,
+    chapterId: string
+  ): Promise<ApiBibleVerseSummary[]> {
+    return this.get<ApiBibleVerseSummary[]>(
+      `/bibles/${bibleId}/chapters/${chapterId}/verses`
+    );
   }
 
   async getVerse(bibleId: string, verseId: string): Promise<ApiBibleVerse> {
@@ -378,11 +429,16 @@ export class ApiBibleService {
     });
   }
 
-  private async get<T>(endpoint: string, params: Record<string, string> = {}): Promise<T> {
+  private async get<T>(
+    endpoint: string,
+    params: Record<string, string> = {}
+  ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
     this.logger.debug(`GET ${endpoint}`);
     try {
-      const response = await firstValueFrom(this.http.get<{ data: T }>(url, { params }));
+      const response = await firstValueFrom(
+        this.http.get<{ data: T }>(url, { params })
+      );
       return response.data.data;
     } catch (err) {
       const axiosErr = err as AxiosError<{ message?: string }>;
@@ -408,6 +464,7 @@ Expected: all tests PASS.
 ## Task 5: Create `ApiBibleModule`
 
 **Files:**
+
 - Create: `src/api-bible/api-bible.module.ts`
 
 **Step 1: Create the module**
@@ -450,6 +507,7 @@ Expected: no TypeScript errors.
 ## Task 6: Register `ApiBibleModule` in `AppModule`
 
 **Files:**
+
 - Modify: `src/app.module.ts`
 
 **Step 1: Add the import**
