@@ -18,4 +18,8 @@ export class EnvDTO {
   @IsNumberString()
   @IsNotEmpty()
   PORT: string;
+
+  @IsString()
+  @IsNotEmpty()
+  API_BIBLE_KEY: string;
 }
