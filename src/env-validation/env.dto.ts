@@ -1,4 +1,10 @@
-import { IsEnum, IsNotEmpty, IsNumberString, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumberString,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 enum Environment {
   Development = 'development',
@@ -22,4 +28,20 @@ export class EnvDTO {
   @IsString()
   @IsNotEmpty()
   API_BIBLE_KEY: string;
+
+  @IsString()
+  @IsNotEmpty()
+  REDIS_HOST: string;
+
+  @IsNumberString()
+  @IsNotEmpty()
+  REDIS_PORT: string;
+
+  @IsString()
+  @IsOptional()
+  REDIS_PASSWORD?: string;
+
+  @IsString()
+  @IsOptional()
+  REDIS_USE_TLS?: string;
 }
