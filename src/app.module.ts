@@ -9,6 +9,7 @@ import { DatabaseModule } from './database/database.module';
 import { validate } from './env-validation/env.validation';
 import { IngestionModule } from './ingestion/ingestion.module';
 import { ResponseInterceptor } from './interceptors/response.interceptor';
+import { SearchModule } from './search/search.module';
 import { TranslationModule } from './translation/translation.module';
 import { GlobalExceptionFilter } from './utils/global-exception.filter';
 
@@ -21,6 +22,7 @@ import { GlobalExceptionFilter } from './utils/global-exception.filter';
     ApiBibleModule,
     IngestionModule,
     TranslationModule,
+    SearchModule,
   ],
   controllers: [],
   providers: [
@@ -29,6 +31,7 @@ import { GlobalExceptionFilter } from './utils/global-exception.filter';
       useValue: new ValidationPipe({
         whitelist: true,
         stopAtFirstError: true,
+        transform: true,
       }),
     },
     { provide: APP_FILTER, useClass: GlobalExceptionFilter },
