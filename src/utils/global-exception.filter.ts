@@ -9,6 +9,7 @@ import {
 import { Response } from 'express';
 
 import { ApiBibleError } from '../api-bible/api-bible.errors';
+import { AppError } from './app-error';
 
 const isDev = () => process.env.NODE_ENV === 'development';
 
@@ -20,21 +21,36 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const res = ctx.getResponse<Response>();
 
+    if (err instanceof AppError) {
+      const body: { status: string; message: string; errors?: unknown } = {
+        status: 'fail',
+        message: err.message,
+      };
+
+      if (err.errors !== undefined) {
+        body.errors = err.errors;
+      }
+
+      return res.status(err.statusCode).json(body);
+    }
+
     if (err instanceof HttpException) {
       const status = err.getStatus();
       const response = err.getResponse() as Record<string, unknown>;
+      const message =
+        typeof response === 'string' ? response : response.message;
 
-      if (
-        status === HttpStatus.BAD_REQUEST &&
-        Array.isArray(response?.message)
-      ) {
+      if (status === HttpStatus.BAD_REQUEST && Array.isArray(message)) {
         return res.status(HttpStatus.BAD_REQUEST).json({
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: response.message[0],
+          status: 'fail',
+          message: message[0],
         });
       }
 
-      return res.status(status).json(response);
+      return res.status(status).json({
+        status: 'fail',
+        message: typeof message === 'string' ? message : err.message,
+      });
     }
 
     if (err instanceof ApiBibleError) {
@@ -42,7 +58,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         `Upstream api.bible error [${err.status}] ${err.endpoint}: ${err.message}`
       );
       return res.status(HttpStatus.BAD_GATEWAY).json({
-        statusCode: HttpStatus.BAD_GATEWAY,
+        status: 'fail',
         message: 'Upstream service error',
       });
     }
@@ -52,14 +68,14 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     if (isDev()) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        status: 'fail',
         message,
         stack: err instanceof Error ? err.stack : undefined,
       });
     }
 
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      status: 'fail',
       message: 'Something went very wrong!',
     });
   }
