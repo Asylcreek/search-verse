@@ -1,6 +1,6 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_FILTER, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 
 import { ApiBibleModule } from './api-bible/api-bible.module';
@@ -8,6 +8,8 @@ import { BullConfigModule } from './config/bull-config.module';
 import { DatabaseModule } from './database/database.module';
 import { validate } from './env-validation/env.validation';
 import { IngestionModule } from './ingestion/ingestion.module';
+import { ResponseInterceptor } from './interceptors/response.interceptor';
+import { TranslationModule } from './translation/translation.module';
 import { GlobalExceptionFilter } from './utils/global-exception.filter';
 
 @Module({
@@ -18,6 +20,7 @@ import { GlobalExceptionFilter } from './utils/global-exception.filter';
     DatabaseModule,
     ApiBibleModule,
     IngestionModule,
+    TranslationModule,
   ],
   controllers: [],
   providers: [
@@ -29,6 +32,7 @@ import { GlobalExceptionFilter } from './utils/global-exception.filter';
       }),
     },
     { provide: APP_FILTER, useClass: GlobalExceptionFilter },
+    { provide: APP_INTERCEPTOR, useValue: new ResponseInterceptor() },
   ],
 })
 export class AppModule {}
