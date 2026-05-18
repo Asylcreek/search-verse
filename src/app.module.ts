@@ -12,6 +12,7 @@ import { ResponseInterceptor } from './interceptors/response.interceptor';
 import { SearchModule } from './search/search.module';
 import { TranslationModule } from './translation/translation.module';
 import { GlobalExceptionFilter } from './utils/global-exception.filter';
+import { VerseModule } from './verse/verse.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { GlobalExceptionFilter } from './utils/global-exception.filter';
     IngestionModule,
     TranslationModule,
     SearchModule,
+    VerseModule,
   ],
   controllers: [],
   providers: [
