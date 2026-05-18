@@ -175,12 +175,16 @@ These must be in place before any feature work begins.
 
 **Parent Acceptance Criteria:**
 
-- `GET /search?q=love+is+patient&translations=KJV,NLT` returns matching verses from both translations
+- `GET /search?q=love+is+patient&abbreviations=engKJV,NLT` returns matching verses from both translations
+- `abbreviations` accepts translation abbreviations as returned by `GET /translations` (for example `engKJV`, `NLT`, `AMP`), not API.Bible translation IDs
 - Results are ordered by relevance rank (PostgreSQL `ts_rank`)
-- Each result contains `reference`, `translation`, `book`, `chapter`, `verse`, `text`, and `copyright`
+- Exact text matches are boosted ahead of non-exact matches before applying `ts_rank`
+- Response uses the global success wrapper, with the standard list envelope inside `data`: `totalDocuments`, `totalPages`, `currentPage`, `numOfResults`, and `data`
+- Each item in the envelope's `data` array contains `reference`, `translation`, `book`, `chapter`, `verse`, `text`, and `copyright`
 - Results are one entry per verse-per-translation match (not grouped)
-- If `translations` is omitted, defaults to KJV
-- Returns an empty `results` array (not 404) when no matches are found
+- Each result's `translation` field contains the translation abbreviation
+- `abbreviations` is required; omitting it returns a 400 with a clear validation error
+- Returns an empty envelope `data` array (not 404) when no matches are found
 
 **Dependencies:** US-1.1
 
@@ -194,7 +198,7 @@ These must be in place before any feature work begins.
 
 **Acceptance Criteria:**
 
-- `GET /search?q=patience` returns verses from KJV where the word appears
+- `GET /search?q=patience&abbreviations=engKJV` returns verses from KJV where the word appears
 - Results include `text`, `reference`, and `copyright`
 - `ts_rank` used for ordering — most relevant verses first
 - Query is case-insensitive
@@ -211,10 +215,11 @@ These must be in place before any feature work begins.
 
 **Acceptance Criteria:**
 
-- `GET /search?q=patience&translations=KJV,NLT,AMP` returns results from all three
+- `GET /search?q=patience&abbreviations=engKJV,NLT,AMP` returns results from all three
 - Results interleaved — not grouped by translation
 - Each result identifies its translation via the `translation` field
-- Invalid translation IDs in the list are ignored (not a 400 error)
+- Invalid translation abbreviations in the list are ignored (not a 400 error)
+- If all requested translation abbreviations are invalid, the endpoint returns a wrapped standard empty list envelope with HTTP 200
 
 **Dependencies:** US-2.1a
 
@@ -228,9 +233,9 @@ These must be in place before any feature work begins.
 
 **Acceptance Criteria:**
 
-- Query with no matches returns `{ "query": "...", "total": 0, "results": [] }`
+- Query with no matches returns `{ "status": "success", "data": { "totalDocuments": 0, "totalPages": 1, "currentPage": 1, "numOfResults": 0, "data": [] } }`
 - HTTP status is 200, not 404
-- Response is well-formed and consistent with non-empty responses
+- Response uses the global success wrapper and standard list envelope, consistent with non-empty responses
 
 **Dependencies:** US-2.1b
 
