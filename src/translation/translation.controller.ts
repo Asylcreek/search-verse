@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 
 import { TranslationResponseDto } from './dto/translation-response.dto';
 import { TranslationService } from './translation.service';
@@ -10,5 +10,10 @@ export class TranslationController {
   @Get()
   findAll(): Promise<TranslationResponseDto[]> {
     return this.translationService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<TranslationResponseDto> {
+    return this.translationService.findOne(id);
   }
 }
