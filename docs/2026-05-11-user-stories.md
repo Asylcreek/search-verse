@@ -292,29 +292,34 @@ These must be in place before any feature work begins.
 
 **Acceptance Criteria:**
 
-- `GET /verses/JHN.3.16?translations=KJV,NLT,AMP` returns the verse from all three translations
+- `GET /verses/JHN.3.16?translations=KJV,NLT,AMP` returns the verse from matching ingested translations
+- `translations` is required and accepts comma-separated translation abbreviations
 - Response includes `reference`, `book`, `chapter`, `verse`, and a `translations` array
-- Each translation entry includes `id`, `text`, and `copyright`
-- Returns 404 with a meaningful error if the reference does not exist
-- If a translation is requested but that verse has not been ingested, it is omitted from the `translations` array (not an error)
+- Each translation entry includes `id`, `abbreviation`, `text`, and `copyright`
+- If a translation abbreviation is requested but that verse has not been ingested, it is omitted from the `translations` array
+- Unknown translation abbreviations are ignored and are not errors
+- If the reference exists in any ingested translation but none of the requested abbreviations match, returns `200` with `translations: []`
+- Returns 404 with a meaningful error if the reference does not exist in any ingested translation
 
 **Dependencies:** US-1.1
 
 ---
 
-### US-3.2: Handle invalid verse references
+### US-3.2: Handle verse lookup request errors
 
 **As a** developer consuming the API  
-**I want to** receive a clear error when I provide a malformed reference  
+**I want to** receive clear errors for invalid verse lookup requests  
 **So that** I can surface a useful message to the user
 
 **Size:** XS
 
 **Acceptance Criteria:**
 
-- `GET /verses/INVALID` returns 400 with an error explaining the expected format
-- `GET /verses/JHN.99.1` (non-existent chapter) returns 404
-- Error responses use a consistent shape: `{ "error": "...", "statusCode": 400 }`
+- `translations` is required for `GET /verses/:reference`
+- Missing or empty `translations` returns 400 with a clear validation message
+- Reference values are passed to the database as provided; no verse-reference format parser is added
+- `GET /verses/INVALID?translations=KJV` returns 404 when `INVALID` has no ingested rows
+- Error responses use the existing global shape: `{ "status": "fail", "message": "..." }`
 
 **Dependencies:** US-3.1
 
