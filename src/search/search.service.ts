@@ -3,7 +3,7 @@ import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
 import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 
 import { DRIZZLE_CLIENT } from '../database/database.providers';
-import { translations, verses } from '../database/schema';
+import { books, translations, verses } from '../database/schema';
 import { TSVECTOR_CONFIG } from '../ingestion/ingestion.constants';
 import { SearchQueryDto } from './dto/search-query.dto';
 import { SearchResponse } from './search.types';
@@ -35,7 +35,13 @@ export class SearchService {
     const searchQuery = sql`websearch_to_tsquery(${TSVECTOR_CONFIG}::regconfig, ${query.q})`;
     const searchCondition = and(
       inArray(translations.abbreviation, translationAbbreviations),
-      sql`${verses.textSearch} @@ ${searchQuery}`
+      sql`${verses.textSearch} @@ ${searchQuery}`,
+      query.book ? eq(verses.bookId, query.book) : undefined,
+      query.testament ? eq(books.testament, query.testament) : undefined
+    );
+    const bookJoinCondition = and(
+      eq(books.translationId, verses.translationId),
+      eq(books.bookId, verses.bookId)
     );
     const rank = sql<number>`ts_rank(${verses.textSearch}, ${searchQuery})`;
     const exactMatchRank = sql<number>`
@@ -49,6 +55,7 @@ export class SearchService {
       .select({ totalDocuments: count() })
       .from(verses)
       .innerJoin(translations, eq(verses.translationId, translations.id))
+      .innerJoin(books, bookJoinCondition)
       .where(searchCondition);
 
     const totalDocuments = totalRows[0]?.totalDocuments ?? 0;
@@ -65,6 +72,7 @@ export class SearchService {
       })
       .from(verses)
       .innerJoin(translations, eq(verses.translationId, translations.id))
+      .innerJoin(books, bookJoinCondition)
       .where(searchCondition)
       .orderBy(
         desc(exactMatchRank),

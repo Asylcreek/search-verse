@@ -2,11 +2,18 @@ import { Transform } from 'class-transformer';
 import {
   ArrayNotEmpty,
   IsArray,
+  IsEnum,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Min,
 } from 'class-validator';
+
+import {
+  type Testament,
+  testamentEnum,
+} from '../../database/schema/books.schema';
 
 export class SearchQueryDto {
   @Transform(({ value }) => String(value ?? '').trim())
@@ -31,8 +38,18 @@ export class SearchQueryDto {
   @Min(1, { message: 'page must be at least 1' })
   page: number = 1;
 
-  @Transform(({ value }) => (value === undefined ? 10 : Number(value)))
+  @Transform(({ value }) => (value === undefined ? 20 : Number(value)))
   @IsInt({ message: 'limit must be an integer' })
   @Min(1, { message: 'limit must be at least 1' })
-  limit: number = 10;
+  limit: number = 20;
+
+  @IsOptional()
+  @IsEnum(testamentEnum.enumValues, {
+    message: 'testament must be one of: OT, NT',
+  })
+  testament?: Testament;
+
+  @IsOptional()
+  @IsString({ message: 'book must be a string' })
+  book?: string;
 }

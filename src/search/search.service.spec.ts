@@ -16,15 +16,25 @@ describe('SearchService', () => {
 
   const createDb = (totalDocuments: number, rows: (typeof row)[]) => {
     const whereForCount = jest.fn().mockResolvedValue([{ totalDocuments }]);
-    const innerJoinForCount = jest.fn(() => ({ where: whereForCount }));
-    const fromForCount = jest.fn(() => ({ innerJoin: innerJoinForCount }));
+    const innerJoinBooksForCount = jest.fn(() => ({ where: whereForCount }));
+    const innerJoinTranslationsForCount = jest.fn(() => ({
+      innerJoin: innerJoinBooksForCount,
+    }));
+    const fromForCount = jest.fn(() => ({
+      innerJoin: innerJoinTranslationsForCount,
+    }));
 
     const limit = jest.fn().mockResolvedValue(rows);
     const offset = jest.fn(() => ({ limit }));
     const orderBy = jest.fn(() => ({ offset }));
     const whereForRows = jest.fn(() => ({ orderBy }));
-    const innerJoinForRows = jest.fn(() => ({ where: whereForRows }));
-    const fromForRows = jest.fn(() => ({ innerJoin: innerJoinForRows }));
+    const innerJoinBooksForRows = jest.fn(() => ({ where: whereForRows }));
+    const innerJoinTranslationsForRows = jest.fn(() => ({
+      innerJoin: innerJoinBooksForRows,
+    }));
+    const fromForRows = jest.fn(() => ({
+      innerJoin: innerJoinTranslationsForRows,
+    }));
 
     const select = jest
       .fn()
@@ -33,10 +43,14 @@ describe('SearchService', () => {
 
     return {
       db: { select },
+      innerJoinBooksForCount,
+      innerJoinBooksForRows,
       limit,
       offset,
       orderBy,
       select,
+      whereForCount,
+      whereForRows,
     };
   };
 
@@ -67,6 +81,8 @@ describe('SearchService', () => {
       data: [row],
     });
     expect(mock.select).toHaveBeenCalledTimes(2);
+    expect(mock.innerJoinBooksForCount).toHaveBeenCalledTimes(1);
+    expect(mock.innerJoinBooksForRows).toHaveBeenCalledTimes(1);
     expect(mock.offset).toHaveBeenCalledWith(0);
     expect(mock.limit).toHaveBeenCalledWith(10);
     expect(mock.orderBy).toHaveBeenCalledWith(
@@ -110,5 +126,27 @@ describe('SearchService', () => {
       data: [],
     });
     expect(mock.select).not.toHaveBeenCalled();
+  });
+
+  it('passes book and testament filters into the search query', async () => {
+    const mock = createDb(0, []);
+    const service = await createService(mock.db);
+
+    await expect(
+      service.search({
+        q: 'love',
+        abbreviations: ['engKJV'],
+        page: 1,
+        limit: 20,
+        book: 'UNKNOWN',
+        testament: 'NT',
+      })
+    ).resolves.toMatchObject({
+      totalDocuments: 0,
+      data: [],
+    });
+
+    expect(mock.whereForCount).toHaveBeenCalledWith(expect.anything());
+    expect(mock.whereForRows).toHaveBeenCalledWith(expect.anything());
   });
 });
