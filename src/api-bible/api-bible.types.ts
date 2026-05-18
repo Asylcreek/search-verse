@@ -46,3 +46,49 @@ export interface ApiBibleVerse {
   reference: string;
   content: string;
 }
+
+export interface ApiBibleVerseContent {
+  id: string;
+  bibleId: string;
+  bookId: string;
+  chapterId: string;
+  reference: string;
+  content: ApiBibleContentNode[];
+}
+
+export interface ApiBibleContentTextItem {
+  text: string;
+  tail?: string;
+  attrs?: Record<string, string | string[]>;
+}
+
+export interface ApiBibleContentNode {
+  name: string;
+  items?: (ApiBibleContentNode | ApiBibleContentTextItem | null)[];
+  attrs?: Record<string, string>;
+}
+
+export interface ApiBibleChapterContent {
+  id: string;
+  bibleId: string;
+  bookId: string;
+  number: string;
+  reference: string;
+  content: ApiBibleContentNode[];
+  verseCount: number;
+}
+
+export interface ApiBiblePassageContent {
+  id: string;
+  bibleId: string;
+  orgId: string;
+  reference: string;
+  content: ApiBibleContentNode[];
+  verseCount: number;
+}
+
+export interface ApiBibleVerseText {
+  verseId: string;
+  text: string;
+  number: string;
+}

@@ -6,7 +6,7 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 
 import { ApiBibleError } from '../api-bible/api-bible.errors';
 
@@ -19,7 +19,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   catch(err: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const res = ctx.getResponse<Response>();
-    ctx.getRequest<Request>();
 
     if (err instanceof HttpException) {
       const status = err.getStatus();
@@ -29,12 +28,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         status === HttpStatus.BAD_REQUEST &&
         Array.isArray(response?.message)
       ) {
-        return res
-          .status(HttpStatus.BAD_REQUEST)
-          .json({
-            statusCode: HttpStatus.BAD_REQUEST,
-            message: response.message[0],
-          });
+        return res.status(HttpStatus.BAD_REQUEST).json({
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: response.message[0],
+        });
       }
 
       return res.status(status).json(response);
@@ -44,12 +41,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       this.logger.warn(
         `Upstream api.bible error [${err.status}] ${err.endpoint}: ${err.message}`
       );
-      return res
-        .status(HttpStatus.BAD_GATEWAY)
-        .json({
-          statusCode: HttpStatus.BAD_GATEWAY,
-          message: 'Upstream service error',
-        });
+      return res.status(HttpStatus.BAD_GATEWAY).json({
+        statusCode: HttpStatus.BAD_GATEWAY,
+        message: 'Upstream service error',
+      });
     }
 
     const message = err instanceof Error ? err.message : 'Unknown error';
@@ -63,11 +58,9 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       });
     }
 
-    return res
-      .status(HttpStatus.INTERNAL_SERVER_ERROR)
-      .json({
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: 'Something went very wrong!',
-      });
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: 'Something went very wrong!',
+    });
   }
 }

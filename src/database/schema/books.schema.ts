@@ -9,6 +9,7 @@ import {
 import { translations } from './translations.schema';
 
 export const testamentEnum = pgEnum('testament', ['OT', 'NT']);
+export type Testament = (typeof testamentEnum.enumValues)[number];
 
 export const books = pgTable(
   'books',
