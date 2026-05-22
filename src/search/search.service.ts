@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
 import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 
+import { buildDisplayReference, getBookName } from '../book/book.metadata';
 import { DRIZZLE_CLIENT } from '../database/database.providers';
 import { books, translations, verses } from '../database/schema';
 import { TSVECTOR_CONFIG } from '../ingestion/ingestion.constants';
@@ -90,7 +91,16 @@ export class SearchService {
       totalPages: Math.max(1, Math.ceil(totalDocuments / resultsPerPage)),
       currentPage,
       numOfResults: rows.length,
-      data: rows,
+      data: rows.map((row) => ({
+        ...row,
+        displayReference: buildDisplayReference(
+          row.book,
+          row.chapter,
+          row.verse,
+          row.reference
+        ),
+        bookName: getBookName(row.book),
+      })),
     };
   }
 }

@@ -7,7 +7,9 @@ export interface VerseTranslationResult {
 
 export interface VerseComparisonResponse {
   reference: string;
+  displayReference: string;
   book: string;
+  bookName: string;
   chapter: number;
   verse: number;
   translations: VerseTranslationResult[];

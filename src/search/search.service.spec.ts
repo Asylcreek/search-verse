@@ -13,6 +13,11 @@ describe('SearchService', () => {
     text: 'Charity suffereth long, and is kind',
     copyright: 'King James Version. Public Domain.',
   };
+  const enrichedRow = {
+    ...row,
+    displayReference: '1 Corinthians 13:4',
+    bookName: '1 Corinthians',
+  };
 
   const createDb = (totalDocuments: number, rows: (typeof row)[]) => {
     const whereForCount = jest.fn().mockResolvedValue([{ totalDocuments }]);
@@ -78,7 +83,7 @@ describe('SearchService', () => {
       totalPages: 1,
       currentPage: 1,
       numOfResults: 1,
-      data: [row],
+      data: [enrichedRow],
     });
     expect(mock.select).toHaveBeenCalledTimes(2);
     expect(mock.innerJoinBooksForCount).toHaveBeenCalledTimes(1);
@@ -148,5 +153,34 @@ describe('SearchService', () => {
 
     expect(mock.whereForCount).toHaveBeenCalledWith(expect.anything());
     expect(mock.whereForRows).toHaveBeenCalledWith(expect.anything());
+  });
+
+  it('falls back to machine fields when book metadata is missing', async () => {
+    const unknownRow = {
+      ...row,
+      reference: 'UNKNOWN.1.1',
+      book: 'UNKNOWN',
+      chapter: 1,
+      verse: 1,
+    };
+    const mock = createDb(1, [unknownRow]);
+    const service = await createService(mock.db);
+
+    await expect(
+      service.search({
+        q: 'love',
+        abbreviations: ['engKJV'],
+        page: 1,
+        limit: 10,
+      })
+    ).resolves.toMatchObject({
+      data: [
+        {
+          ...unknownRow,
+          bookName: 'UNKNOWN',
+          displayReference: 'UNKNOWN.1.1',
+        },
+      ],
+    });
   });
 });

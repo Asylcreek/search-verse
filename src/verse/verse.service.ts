@@ -2,6 +2,7 @@ import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { and, eq, inArray } from 'drizzle-orm';
 import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 
+import { buildDisplayReference, getBookName } from '../book/book.metadata';
 import { DRIZZLE_CLIENT } from '../database/database.providers';
 import { translations, verses } from '../database/schema';
 import { AppError } from '../utils/app-error';
@@ -57,6 +58,13 @@ export class VerseService {
 
     return {
       ...verse,
+      displayReference: buildDisplayReference(
+        verse.book,
+        verse.chapter,
+        verse.verse,
+        verse.reference
+      ),
+      bookName: getBookName(verse.book),
       translations: translationRows,
     };
   }
