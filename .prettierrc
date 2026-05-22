@@ -8,7 +8,11 @@
   "bracketSameLine": false,
   "htmlWhitespaceSensitivity": "css",
   "endOfLine": "lf",
-  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "plugins": [
+    "prettier-plugin-svelte",
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "importOrder": [
@@ -18,5 +22,28 @@
     "^src/",
     "^[./]"
   ],
-  "importOrderParserPlugins": ["classProperties", "decorators", "typescript"]
+  "importOrderParserPlugins": ["classProperties", "decorators", "typescript"],
+  "overrides": [
+    {
+      "files": "web/**/*",
+      "options": {
+        "useTabs": true,
+        "trailingComma": "none",
+        "printWidth": 100,
+        "importOrder": [
+          "<THIRD_PARTY_MODULES>",
+          "<SEPARATOR>",
+          "^(\\$lib|\\.{1,2})/(.*)$"
+        ],
+        "tailwindStylesheet": "./web/src/app.css",
+        "tailwindFunctions": ["cn"]
+      }
+    },
+    {
+      "files": "web/**/*.svelte",
+      "options": {
+        "parser": "svelte"
+      }
+    }
+  ]
 }

@@ -1,8 +1,12 @@
 packages:
   - '.'
+  - 'web'
 
 allowBuilds:
   '@nestjs/core': true
   esbuild: true
   msgpackr-extract: true
   unrs-resolver: true
+
+minimumReleaseAgeExclude:
+  - prettier-plugin-svelte@4.0.1
