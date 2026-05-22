@@ -14,8 +14,11 @@
 	},
 	"dependencies": {
 		"@lucide/svelte": "^1.16.0",
+		"@tanstack/svelte-query": "^6.1.30",
+		"@tanstack/svelte-query-devtools": "^6.1.30",
 		"bits-ui": "^2.0.0",
 		"clsx": "^2.1.1",
+		"runed": "^0.37.1",
 		"svelte-sonner": "^1.0.0",
 		"tailwind-merge": "^3.6.0"
 	},

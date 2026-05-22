@@ -6,7 +6,7 @@
 </script>
 
 <nav
-	class="flex border border-stone-300 bg-white/70 p-1 text-xs text-stone-600 uppercase dark:border-stone-700 dark:bg-stone-900/70 dark:text-stone-300"
+	class="ml-auto flex border border-stone-300 bg-white/70 p-1 text-xs text-stone-600 uppercase dark:border-stone-700 dark:bg-stone-900/70 dark:text-stone-300"
 	aria-label="Main navigation"
 >
 	<a
