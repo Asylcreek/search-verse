@@ -1,0 +1,51 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+	color-scheme: light;
+}
+
+.dark {
+	color-scheme: dark;
+}
+
+*,
+::before,
+::after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	min-height: 100%;
+}
+
+body {
+	margin: 0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+	button,
+	input,
+	select,
+	textarea {
+		font: inherit;
+	}
+
+	button,
+	[role='button'],
+	input[type='submit'],
+	input[type='reset'],
+	input[type='button'] {
+		cursor: pointer;
+	}
+
+	p,
+	a,
+	li {
+		overflow-wrap: anywhere;
+	}
+}
