@@ -4,6 +4,7 @@ import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 
 import { ApiBibleModule } from './api-bible/api-bible.module';
+import { BooksModule } from './book/book.module';
 import { BullConfigModule } from './config/bull-config.module';
 import { DatabaseModule } from './database/database.module';
 import { validate } from './env-validation/env.validation';
@@ -25,6 +26,7 @@ import { VerseModule } from './verse/verse.module';
     TranslationModule,
     SearchModule,
     VerseModule,
+    BooksModule,
   ],
   controllers: [],
   providers: [

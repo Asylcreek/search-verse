@@ -74,7 +74,9 @@ describe('VerseService', () => {
       service.findByReference('JHN.3.16', ['KJV', 'NLT', 'AMP'])
     ).resolves.toEqual({
       reference: 'JHN.3.16',
+      displayReference: 'John 3:16',
       book: 'JHN',
+      bookName: 'John',
       chapter: 3,
       verse: 16,
       translations: translationRows,
@@ -91,7 +93,9 @@ describe('VerseService', () => {
     await expect(service.findByReference('JHN.3.16', ['ZZZ'])).resolves.toEqual(
       {
         reference: 'JHN.3.16',
+        displayReference: 'John 3:16',
         book: 'JHN',
+        bookName: 'John',
         chapter: 3,
         verse: 16,
         translations: [],
@@ -116,5 +120,28 @@ describe('VerseService', () => {
     }
     expect(mock.select).toHaveBeenCalledTimes(1);
     expect(mock.fromForTranslations).not.toHaveBeenCalled();
+  });
+
+  it('falls back to machine fields when book metadata is missing', async () => {
+    const unknownReferenceRow = {
+      reference: 'UNKNOWN.1.1',
+      book: 'UNKNOWN',
+      chapter: 1,
+      verse: 1,
+    };
+    const mock = createDb([unknownReferenceRow], []);
+    const service = await createService(mock.db);
+
+    await expect(
+      service.findByReference('UNKNOWN.1.1', ['KJV'])
+    ).resolves.toEqual({
+      reference: 'UNKNOWN.1.1',
+      displayReference: 'UNKNOWN.1.1',
+      book: 'UNKNOWN',
+      bookName: 'UNKNOWN',
+      chapter: 1,
+      verse: 1,
+      translations: [],
+    });
   });
 });
