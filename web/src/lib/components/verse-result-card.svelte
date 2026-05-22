@@ -16,8 +16,10 @@
 <article
 	class="grid gap-4 border border-stone-300 bg-white/85 p-5 shadow-sm dark:border-stone-700 dark:bg-stone-900/85"
 >
-	{#if showReference && result.reference}
-		<div class="text-xs text-stone-500 uppercase dark:text-stone-400">{result.reference}</div>
+	{#if showReference && result.displayReference}
+		<div class="text-xs text-stone-500 uppercase dark:text-stone-400">
+			{result.displayReference}
+		</div>
 	{/if}
 
 	<p class="m-0 font-serif text-xl leading-relaxed text-stone-950 dark:text-stone-50">
@@ -27,7 +29,7 @@
 	<footer
 		class="flex items-center justify-between gap-4 border-t border-stone-200 pt-3 dark:border-stone-800"
 	>
-		<div class="flex flex-wrap gap-2 text-xs text-stone-500 uppercase dark:text-stone-400">
+		<div class="flex flex-wrap gap-2 text-xs text-stone-500 dark:text-stone-400">
 			<span>{result.translation}</span>
 		</div>
 		<button
