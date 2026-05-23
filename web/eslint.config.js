@@ -21,6 +21,17 @@ export default [
 		}
 	},
 	{
+		files: ['src/service-worker.js'],
+		languageOptions: {
+			globals: {
+				caches: 'readonly',
+				fetch: 'readonly',
+				self: 'readonly',
+				URL: 'readonly'
+			}
+		}
+	},
+	{
 		ignores: [
 			'.DS_Store',
 			'node_modules',
