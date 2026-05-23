@@ -1,0 +1,49 @@
+name: Deploy prod
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.2
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2.8.1
+        with:
+          key: ${{ secrets.SSH_API_PRIVATE_KEY }}
+          known_hosts: 'placeholder-to-prevent-errors'
+
+      - name: Add known hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_API_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Copy files
+        run: rsync -arvz --delete ./ ${{ secrets.SSH_API_USER }}@${{ secrets.SSH_API_HOST }}:~/searchverse
+
+      - name: Run deployment
+        uses: appleboy/ssh-action@v1.2.5
+        env:
+          APP_PORT: ${{ vars.APP_PORT }}
+          VIRTUAL_HOST: ${{ vars.VIRTUAL_HOST }}
+          API_BIBLE_KEY: ${{ secrets.API_BIBLE_KEY }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASS: ${{ secrets.POSTGRES_PASS }}
+          REDIS_PASS: ${{ secrets.REDIS_PASS }}
+        with:
+          host: ${{ secrets.SSH_API_HOST }}
+          username: ${{ secrets.SSH_API_USER }}
+          key: ${{ secrets.SSH_API_PRIVATE_KEY }}
+          port: 22
+          envs: APP_PORT,VIRTUAL_HOST,API_BIBLE_KEY,POSTGRES_DB,POSTGRES_USER,POSTGRES_PASS,REDIS_PASS
+          script: |
+            cd ~/searchverse
+            export APP_PORT=$APP_PORT VIRTUAL_HOST=$VIRTUAL_HOST API_BIBLE_KEY=$API_BIBLE_KEY POSTGRES_DB=$POSTGRES_DB POSTGRES_USER=$POSTGRES_USER POSTGRES_PASS=$POSTGRES_PASS REDIS_PASS=$REDIS_PASS
+            docker-compose build --no-cache
+            docker-compose up -d --force-recreate --remove-orphans
