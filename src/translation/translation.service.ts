@@ -1,5 +1,5 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, isNotNull } from 'drizzle-orm';
 import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 
 import { DRIZZLE_CLIENT } from '../database/database.providers';
@@ -26,7 +26,8 @@ export class TranslationService {
         created_at: translations.createdAt,
         updated_at: translations.updatedAt,
       })
-      .from(translations);
+      .from(translations)
+      .where(isNotNull(translations.lastSyncedAt));
   }
 
   async findOne(id: string): Promise<TranslationResponseDto> {
