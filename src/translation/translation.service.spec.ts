@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { isNotNull } from 'drizzle-orm';
 
 import { DRIZZLE_CLIENT } from '../database/database.providers';
 import { translations } from '../database/schema';
@@ -42,7 +43,8 @@ describe('TranslationService', () => {
         updated_at: updatedAt,
       },
     ];
-    from.mockResolvedValue(rows);
+    from.mockReturnValue({ where });
+    where.mockResolvedValue(rows);
 
     const result = await service.findAll();
 
@@ -57,11 +59,13 @@ describe('TranslationService', () => {
       updated_at: translations.updatedAt,
     });
     expect(from).toHaveBeenCalledWith(translations);
+    expect(where).toHaveBeenCalledWith(isNotNull(translations.lastSyncedAt));
     expect(result).toBe(rows);
   });
 
   it('returns an empty array when no translations exist', async () => {
-    from.mockResolvedValue([]);
+    from.mockReturnValue({ where });
+    where.mockResolvedValue([]);
 
     await expect(service.findAll()).resolves.toEqual([]);
   });
