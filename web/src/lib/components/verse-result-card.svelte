@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CopyrightModal from '$lib/components/copyright-modal.svelte';
-	import type { VerseResult } from '$lib/mock-data';
+	import type { VerseResult } from '$lib/types/verse-result';
 
 	let {
 		result,

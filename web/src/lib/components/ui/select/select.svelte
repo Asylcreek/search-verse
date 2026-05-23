@@ -31,7 +31,7 @@
 
 <Combobox.Root bind:open inputValue={search || inputValue} {...restProps}>
 	<div class="relative">
-		<Combobox.Input onfocus={() => (open = true)} oninput={updateSearch}>
+		<Combobox.Input clearOnDeselect onfocus={() => (open = true)} oninput={updateSearch}>
 			{#snippet child({ props })}
 				{@render input({ props })}
 			{/snippet}
