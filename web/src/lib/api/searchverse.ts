@@ -16,6 +16,19 @@ export interface Translation {
 	updated_at: string;
 }
 
+export interface BookChapterMetadata {
+	number: number;
+	verses: number;
+}
+
+export interface BookMetadata {
+	id: string;
+	name: string;
+	testament: 'OT' | 'NT';
+	position: number;
+	chapters: BookChapterMetadata[];
+}
+
 export interface SearchResult {
 	reference: string;
 	displayReference: string;
@@ -26,6 +39,23 @@ export interface SearchResult {
 	verse: number;
 	text: string;
 	copyright: string;
+}
+
+export interface VerseTranslationResult {
+	id: string;
+	abbreviation: string;
+	text: string;
+	copyright: string;
+}
+
+export interface VerseComparison {
+	reference: string;
+	displayReference: string;
+	book: string;
+	bookName: string;
+	chapter: number;
+	verse: number;
+	translations: VerseTranslationResult[];
 }
 
 export interface PaginatedResponse<T> {
@@ -41,6 +71,11 @@ export interface SearchVersesParams {
 	abbreviations: string[];
 	page: number;
 	limit: number;
+}
+
+export interface CompareVerseParams {
+	reference: string;
+	translations: string[];
 }
 
 export class ApiError extends Error {
@@ -80,6 +115,10 @@ export function fetchTranslations() {
 	return fetchJson<Translation[]>(apiUrl('/translations'));
 }
 
+export function fetchBooks() {
+	return fetchJson<BookMetadata[]>(apiUrl('/books'));
+}
+
 export function searchVerses(params: SearchVersesParams) {
 	const searchParams = new URLSearchParams({
 		q: params.q,
@@ -88,4 +127,14 @@ export function searchVerses(params: SearchVersesParams) {
 	});
 
 	return fetchJson<PaginatedResponse<SearchResult>>(apiUrl('/search', searchParams));
+}
+
+export function compareVerse(params: CompareVerseParams) {
+	const searchParams = new URLSearchParams({
+		translations: params.translations.join(',')
+	});
+
+	return fetchJson<VerseComparison>(
+		apiUrl(`/verses/${encodeURIComponent(params.reference)}`, searchParams)
+	);
 }

@@ -1,4 +1,6 @@
 export const queryKeys = {
 	GET_TRANSLATIONS: 'GET_TRANSLATIONS',
-	SEARCH: 'SEARCH'
+	GET_BOOKS: 'GET_BOOKS',
+	SEARCH: 'SEARCH',
+	COMPARE: 'COMPARE'
 } as const;
