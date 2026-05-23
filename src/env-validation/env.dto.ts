@@ -44,4 +44,12 @@ export class EnvDTO {
   @IsString()
   @IsOptional()
   REDIS_USE_TLS?: string;
+
+  @IsNumberString()
+  @IsOptional()
+  THROTTLE_TTL?: string;
+
+  @IsNumberString()
+  @IsOptional()
+  THROTTLE_LIMIT?: string;
 }

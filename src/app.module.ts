@@ -8,6 +8,7 @@ import { join } from 'path';
 import { ApiBibleModule } from './api-bible/api-bible.module';
 import { BooksModule } from './book/book.module';
 import { BullConfigModule } from './config/bull-config.module';
+import { RateLimitModule } from './config/rate-limit.module';
 import { DatabaseModule } from './database/database.module';
 import { validate } from './env-validation/env.validation';
 import { IngestionModule } from './ingestion/ingestion.module';
@@ -25,6 +26,7 @@ import { VerseModule } from './verse/verse.module';
       exclude: ['/v1/*path'],
     }),
     BullConfigModule,
+    RateLimitModule,
     ScheduleModule.forRoot(),
     DatabaseModule,
     ApiBibleModule,
