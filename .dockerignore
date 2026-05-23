@@ -1,0 +1,9 @@
+node_modules
+web/node_modules
+dist
+web/build
+.git
+.env
+.DS_Store
+coverage
+dump.rdb
